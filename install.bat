@@ -110,11 +110,36 @@ echo [+] Configuration du pare-feu...
 netsh advfirewall firewall add rule name="SimracingOne" dir=in action=allow protocol=TCP localport=5000,8000,3000 profile=any >nul 2>&1
 echo    [OK] Ports ouverts.
 
+REM 7. Creation du raccourci sur le bureau
+echo [+] Creation du raccourci sur le bureau...
+set "ICON_PATH=%PROJECT_DIR%\app.ico"
+set "TARGET_BAT=%PROJECT_DIR%\start.bat"
+set "SHORTCUT_NAME=Overlay SR1 v4.lnk"
+
+REM Preparation du script VBS temporaire
+set "VBS_SCRIPT=%TEMP%\create_shortcut.vbs"
+
+echo Set WshShell = CreateObject("WScript.Shell") > "%VBS_SCRIPT%"
+echo DesktopPath = WshShell.SpecialFolders("Desktop") >> "%VBS_SCRIPT%"
+echo Set Shortcut = WshShell.CreateShortcut(DesktopPath ^& "\%SHORTCUT_NAME%") >> "%VBS_SCRIPT%"
+echo Shortcut.TargetPath = "%TARGET_BAT%" >> "%VBS_SCRIPT%"
+echo Shortcut.WorkingDirectory = "%PROJECT_DIR%" >> "%VBS_SCRIPT%"
+if exist "%ICON_PATH%" (
+    echo Shortcut.IconLocation = "%ICON_PATH%" >> "%VBS_SCRIPT%"
+)
+echo Shortcut.Save >> "%VBS_SCRIPT%"
+
+REM Execution puis suppression du script temporaire
+cscript //nologo "%VBS_SCRIPT%"
+del "%VBS_SCRIPT%" >nul 2>&1
+
+echo    [OK] Raccourci cree sur le bureau.
+
 echo.
 echo =====================================================
 echo    INSTALLATION OVERLAY SR1 v4 TERMINEE AVEC SUCCES
 echo =====================================================
 echo.
-echo L'environnement est pret. Vous pouvez executer start.bat en mode standard.
+echo L'environnement est pret. Un raccourci a ete cree sur votre bureau.
 echo.
 pause
