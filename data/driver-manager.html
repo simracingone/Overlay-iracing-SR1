@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gestionnaire des pilotes</title>
+    <link rel="stylesheet" href="driver-manager.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <header class="header">
+        <div class="header-title">
+            <span class="header-icon">☷</span>
+            <span>GESTIONNAIRE DES PILOTES</span>
+        </div>
+
+        <div class="header-status">
+            <i></i>
+            EN DIRECT
+        </div>
+    </header>
+
+    <div class="blue-line"></div>
+
+    <div class="toolbar">
+
+        <div class="search">
+            <span>⌕</span>
+            <input id="databaseSearch" type="text" placeholder="RECHERCHER UN PILOTE...">
+        </div>
+
+        <select id="filter">
+            <option value="all">TOUS LES PILOTES</option>
+            <option value="known">CLASSÉS</option>
+            <option value="unknown">NON CLASSÉS</option>
+        </select>
+
+        <button id="addDriverButton">AJOUTER UN PILOTE</button>
+
+        <div class="stats">
+            <span><b id="databaseCount">0</b> PILOTES</span>
+            <span><b id="sessionDrivers">0</b> EN SESSION</span>
+        </div>
+
+    </div>
+
+    <main class="content">
+
+        <section class="panel">
+
+            <div class="panel-title">
+                <div>
+                    <strong>BASE DES PILOTES</strong>
+                    <small>CLASSIFICATION PERSONNELLE</small>
+                </div>
+
+                <div class="counter" id="totalDrivers">0</div>
+            </div>
+
+            <div class="panel-search">
+                <span>⌕</span>
+                <input id="searchDatabase" type="text" placeholder="FILTRER LA BASE...">
+            </div>
+
+            <div class="list" id="driverList">
+                <div class="empty">BASE DE DONNÉES VIDE</div>
+            </div>
+
+        </section>
+
+        <section class="panel">
+
+            <div class="panel-title">
+                <div>
+                    <strong>SESSION ACTUELLE</strong>
+                    <small>PILOTES CONNECTÉS À iRACING</small>
+                </div>
+
+                <div class="counter live-counter" id="sessionCount">0</div>
+            </div>
+
+            <div class="session-info">
+                <span class="live-dot"></span>
+                CONNEXION À LA SESSION iRACING
+            </div>
+
+            <div class="session-header">
+                <span>POS</span>
+                <span>NAT</span>
+                <span>PILOTE / VOITURE</span>
+                <span>MARQUE</span>
+                <span>ÉQUIPE / SPONSOR</span>
+                <span>iRATING</span>
+                <span>LIC</span>
+                <span>SR</span>
+                <span>ICÔNE</span>
+            </div>
+
+            <div class="list session-list" id="sessionDriverList">
+                <div class="empty">EN ATTENTE DES DONNÉES DE SESSION</div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <aside id="iconEditor" class="editor"></aside>
+
+</div>
+
+<script src="driver-manager.js"></script>
+
+</body>
+</html>

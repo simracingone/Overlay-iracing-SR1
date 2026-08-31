@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUD Météo / Piste / Drapeaux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700&family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/meteo-piste-drapeaux.css">
+</head>
+<body>
+    <div id="hud-container">
+
+        <!-- ==================== DRAPEAUX ==================== -->
+        <div id="section-drapeaux">
+            <h2 class="panel-header header-drapeaux">DRAPEAUX</h2>
+
+            <div id="drapeau-vert" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">LIBRE / GO</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-jaune" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">DANGER</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-rouge" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">DISQUALIFICATION</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-bleu" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">DÉPASSEMENT</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-blanc" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">LAST LAP</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-debris" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">FULL YELLOW</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-damier" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">FIN DE COURSE</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-pneus" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">ADHÉRENCE</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-meatball" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">MEATBALL</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-stop-go" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">STOP & GO</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-pit" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">PIT PASSAGE</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+
+            <div id="drapeau-avertissement" class="case-drapeau">
+                <div class="voile-sombre"></div>
+                <span class="titre-drapeau">AVERTISSEMENT</span>
+                <div class="statut-drapeau"><span class="point-statut"></span>ACTIF</div>
+            </div>
+        </div>
+
+        <!-- ==================== PISTE ==================== -->
+        <div id="section-piste">
+            <h2 class="panel-header header-piste">PISTE</h2>
+
+            <div class="ligne-piste" id="ligne-last">
+                <div class="label-piste">LAST</div>
+                <div id="piste-dernier-tour" class="valeur-piste"><span class="dynamic-value">--:--.---</span></div>
+            </div>
+
+            <div class="ligne-piste" id="ligne-best">
+                <div class="label-piste">BEST</div>
+                <div id="piste-meilleur-tour" class="valeur-piste"><span class="dynamic-value">--:--.---</span></div>
+            </div>
+
+            <div class="ligne-piste" id="ligne-lap">
+                <div class="label-piste">LAP</div>
+                <div id="piste-tours" class="valeur-piste"><span class="dynamic-value">0 / --</span></div>
+            </div>
+
+            <div class="ligne-piste" id="ligne-time">
+                <div class="label-piste">TIME</div>
+                <div id="piste-temps-session" class="valeur-piste"><span class="dynamic-value">00:00:00</span></div>
+            </div>
+
+            <div class="ligne-piste" id="ligne-cons">
+                <div class="label-piste">CONS/T <span class="unite-sub">L/T</span></div>
+                <div id="piste-consommation" class="valeur-piste"><span class="dynamic-value">0.00</span></div>
+            </div>
+
+            <div class="ligne-piste" id="ligne-tours">
+                <div class="label-piste label-orange">TOURS</div>
+                <div id="piste-tours-restants" class="valeur-piste valeur-orange"><span class="dynamic-value">0</span></div>
+            </div>
+
+            <div class="ligne-piste" id="ligne-inc">
+                <div class="label-piste label-vert">INC</div>
+                <div id="piste-incidents" class="valeur-piste valeur-verte"><span class="dynamic-value">0</span></div>
+            </div>
+
+            <div class="ligne-piste" id="ligne-joker">
+                <div class="label-piste label-violet">JOKER</div>
+                <div id="piste-joker" class="valeur-piste valeur-violet"><span class="dynamic-value">OK</span></div>
+            </div>
+        </div>
+
+<!-- ==================== METEO ==================== -->
+ <!-- ==================== METEO ==================== -->
+        <div id="section-meteo">
+            <h2 class="panel-header header-meteo">MÉTÉO</h2>
+
+            <!-- AIR -->
+            <div class="bloc-meteo-titre" id="titre-air">AIR</div>
+            <div id="meteo-air" class="valeur-meteo"><span class="weather-value">--.-</span></div>
+            <div id="jauge-air-container" class="jauge-container"><div id="jauge-barre-air" class="jauge-barre"></div></div>
+
+            <!-- DIR -->
+            <div class="bloc-meteo-titre" id="titre-dir">DIR.</div>
+            <div id="meteo-direction" class="valeur-meteo"><span class="weather-value">---</span></div>
+            <div id="boussole-aiguille">
+                <div class="fleche-boussole"></div>
+            </div>
+
+            <!-- HUM -->
+            <div class="bloc-meteo-titre" id="titre-hum">HUM.</div>
+            <div id="meteo-humidite" class="valeur-meteo"><span class="weather-value">--</span> <span class="unite">%</span></div>
+            <div id="jauge-hum-container" class="jauge-container"><div id="jauge-barre-humidite" class="jauge-barre"></div></div>
+
+            <!-- TRACK -->
+            <div class="bloc-meteo-titre label-vert" id="titre-track">TRACK</div>
+            <div id="meteo-piste" class="valeur-meteo valeur-verte"><span class="weather-value">--.-</span></div>
+            <div id="jauge-track-container" class="jauge-container"><div id="jauge-barre-piste" class="jauge-barre"></div></div>
+
+            <!-- VENT -->
+            <div class="bloc-meteo-titre" id="titre-vent">VENT</div>
+            <div id="meteo-vent" class="valeur-meteo"><span class="weather-value">--</span></div>
+            <div id="jauge-vent-container" class="jauge-container"><div id="jauge-barre-vent" class="jauge-barre"></div></div>
+
+            <!-- EAU -->
+            <div class="bloc-meteo-titre" id="titre-eau">EAU</div>
+            <div id="meteo-pluie" class="valeur-meteo"><span class="weather-value">--</span></div>
+            <div id="jauge-eau-container" class="jauge-container"><div id="jauge-barre-pluie" class="jauge-barre"></div></div>
+        </div>
+		
+
+    </div>
+	
+	
+
+    <script src="js/meteo-piste-drapeaux.js"></script>
+</body>
+</html>

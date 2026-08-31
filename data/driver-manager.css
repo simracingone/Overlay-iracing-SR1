@@ -1,0 +1,827 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #070d16;
+    color: #e8edf3;
+    font-size: 11px;
+}
+
+button, input, select {
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+button {
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+button:hover {
+    filter: brightness(1.18);
+    transform: translateY(-1px);
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    background: linear-gradient(180deg, #08111d 0%, #080e17 100%);
+    overflow: hidden;
+}
+
+/* =========================================================
+   EN-TÊTE
+   ========================================================= */
+
+.header {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3px;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+.header-icon {
+    color: #19c9f5;
+    font-size: 17px;
+}
+
+.header-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #718398;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: .8px;
+}
+
+.header-status i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #24d47a;
+    box-shadow: 0 0 7px #24d47a;
+}
+
+.blue-line {
+    height: 1px;
+    margin: 0 1px 8px;
+    background: #168cff;
+    opacity: .8;
+}
+
+/* =========================================================
+   BARRE D'OUTILS
+   ========================================================= */
+
+.toolbar {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.search {
+    width: 306px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    background: #0c1622;
+    border: 1px solid #233346;
+    border-radius: 6px;
+    cursor: text;
+}
+
+.search:focus-within {
+    border-color: #168cff;
+    box-shadow: 0 0 0 2px rgba(22, 140, 255, .12);
+}
+
+.search span,
+.panel-search span {
+    color: #62758a;
+    font-size: 15px;
+}
+
+.search input,
+.panel-search input {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #e8edf3;
+    font-size: 10px;
+    letter-spacing: .3px;
+}
+
+.search input::placeholder,
+.panel-search input::placeholder {
+    color: #4e6074;
+}
+
+select {
+    height: 35px;
+    padding: 0 12px;
+    background: #0c1622;
+    color: #cbd6e1;
+    border: 1px solid #233346;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 600;
+    outline: none;
+}
+
+select:focus {
+    border-color: #168cff;
+}
+
+#addDriverButton {
+    height: 35px;
+    padding: 0 13px;
+    border: 1px solid #168cff;
+    background: linear-gradient(180deg, #1476c8, #0c5798);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#addDriverButton::before {
+    content: "＋";
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.stats {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #53677d;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: .4px;
+}
+
+.stats b {
+    color: #dce5ee;
+    margin-right: 3px;
+}
+
+/* =========================================================
+   CONTENU PRINCIPAL
+   ========================================================= */
+
+.content {
+    display: grid;
+    grid-template-columns: 390px minmax(0, 1fr);
+    gap: 8px;
+    width: 100%;
+    height: calc(100% - 80px);
+    min-height: 0;
+    overflow: hidden;
+}
+
+.panel {
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0a121c;
+    border: 1px solid #202f40;
+    border-radius: 7px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================================
+   TITRES DES PANNEAUX
+   ========================================================= */
+
+.panel-title {
+    height: 50px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    background: linear-gradient(180deg, #101c2a, #0d1825);
+    border-bottom: 1px solid #253548;
+}
+
+.panel-title strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.panel-title small {
+    display: block;
+    margin-top: 3px;
+    color: #61748a;
+    font-size: 7px;
+    letter-spacing: .7px;
+    font-weight: 600;
+}
+
+.counter {
+    min-width: 48px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #080f18;
+    border: 1px solid #304255;
+    border-radius: 7px;
+    color: #d9e3ec;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.live-counter {
+    color: #27d47c;
+    border-color: #225b45;
+    background: rgba(20, 72, 51, .18);
+}
+
+/* =========================================================
+   RECHERCHE & EN-TÊTES PANNEAU
+   ========================================================= */
+
+.panel-search {
+    height: 35px;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 11px;
+    border-bottom: 1px solid #1c2938;
+    background: #0a131e;
+}
+
+.session-info {
+    height: 29px;
+    min-height: 29px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 11px;
+    border-bottom: 1px solid #1c2938;
+    color: #5c7086;
+    font-size: 7px;
+    font-weight: 600;
+    letter-spacing: .7px;
+}
+
+.session-header {
+    height: 24px;
+    min-height: 24px;
+    display: grid;
+    grid-template-columns: 34px 28px minmax(150px, 1fr) 90px minmax(130px, 1fr) 58px 48px 48px 70px;
+    column-gap: 8px;
+    padding: 0 12px;
+    align-items: center;
+    background: #080f18;
+    border-bottom: 1px solid #1c2938;
+    color: #5c7086;
+    font-size: 8px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.session-header span:nth-child(3),
+.session-header span:nth-child(5) {
+    text-align: left;
+}
+
+.live-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #24d47a;
+    box-shadow: 0 0 6px #24d47a;
+}
+
+/* =========================================================
+   LISTES
+   ========================================================= */
+
+.list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.session-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.list::-webkit-scrollbar,
+.session-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.list::-webkit-scrollbar-track,
+.session-list::-webkit-scrollbar-track {
+    background: #080e16;
+}
+
+.list::-webkit-scrollbar-thumb,
+.session-list::-webkit-scrollbar-thumb {
+    background: #293b4e;
+    border-radius: 4px;
+}
+
+.empty {
+    padding: 20px;
+    text-align: center;
+    color: #4e6074;
+    font-size: 9px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   BASE DES PILOTES (GAUCHE)
+   ========================================================= */
+
+.driver-row {
+    height: 76px;
+    min-height: 76px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr) 76px;
+    align-items: center;
+    border-bottom: 1px solid #182532;
+    background: #0a111a;
+}
+
+.driver-row:hover {
+    background: #0d1926;
+}
+
+.position {
+    text-align: center;
+    color: #566a80;
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.driver {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.driver-icon {
+    width: 79px;
+    height: 79px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.driver-icon img {
+    width: 77px;
+    height: 77px;
+    object-fit: contain;
+    border: 0;
+    outline: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5));
+}
+
+.driver-info {
+    min-width: 0;
+}
+
+.driver-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #e8edf3;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.driver-car {
+    margin-top: 4px;
+    color: #52667c;
+    font-size: 8px;
+    letter-spacing: .3px;
+    font-weight: 500;
+}
+
+.icon-cell {
+    min-width: 76px;
+    padding: 0 9px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* =========================================================
+   BOUTONS
+   ========================================================= */
+
+.session-add {
+    height: 30px;
+    min-width: 78px;
+    padding: 0 10px;
+    border-radius: 7px;
+    border: 1px solid #2c4a64;
+    background: linear-gradient(180deg, #111f2e, #0b1622);
+    color: #9eb3c8;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: .1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.session-add:hover {
+    border-color: #218cff;
+    background: #113457;
+    color: #fff;
+}
+
+.edit-driver {
+    border-color: #315979;
+    background: linear-gradient(180deg, #15283a, #0d1c2b);
+}
+
+.edit-driver::before {
+    content: "✎";
+    font-size: 9px;
+}
+
+.add-session::before {
+    content: "＋";
+    font-size: 10px;
+}
+
+/* =========================================================
+   SESSION (DROITE) - GRILLE CORRIGÉE
+   ========================================================= */
+
+.session-driver-row {
+    height: 66px;
+    min-height: 66px;
+    width: 100%;
+    display: grid;
+    /* Redéfinition précise des colonnes pour un alignement vertical parfait */
+    grid-template-columns: 34px 28px minmax(150px, 1fr) 90px minmax(130px, 1fr) 58px 48px 48px 70px;
+    align-items: center;
+    column-gap: 8px;
+    padding: 0 12px;
+    border-bottom: 1px solid #182532;
+    background: #0a111a;
+    overflow: hidden;
+}
+
+.session-driver-row:hover {
+    background: #0d1926;
+}
+
+.session-driver-row.known {
+    border-left: 2px solid #237fc8;
+}
+
+.session-driver-row.unknown {
+    border-left: 2px solid transparent;
+}
+
+.session-position {
+    width: 100%;
+    text-align: center;
+    color: #566a80;
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.session-flag {
+    width: 19px;
+    height: 12px;
+    justify-self: center;
+    object-fit: cover;
+    border: 0;
+    outline: 0;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(255, 255, 255, .12);
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .5)) brightness(1.04);
+}
+
+.session-driver-main {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.session-driver-name {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #e8edf3;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.session-car {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #899aae;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+.car-brand {
+    width: 80px;
+    height: 45px;
+    justify-self: center;
+    object-fit: contain;
+    border: 0;
+    outline: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5));
+}
+
+/* =========================================================
+   STATISTIQUES
+   ========================================================= */
+
+.stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: inset 0 1px rgba(255, 255, 255, .08), 0 1px 2px rgba(0, 0, 0, .25);
+}
+
+/* IR */
+.stat-ir {
+    color: #fff;
+    background: #343a40;
+    border: 1px solid #4a5259;
+}
+
+/* LICENCE */
+.stat-lic {
+    border: 1px solid transparent;
+}
+
+.stat-lic.lic-R { color: #fff; background: #d71920; border-color: #ef3a40; }
+.stat-lic.lic-D { color: #fff; background: #f28c00; border-color: #ffab32; }
+.stat-lic.lic-C { color: #111; background: #f1d600; border-color: #ffe33d; }
+.stat-lic.lic-B { color: #fff; background: #159447; border-color: #27bd64; }
+.stat-lic.lic-A { color: #fff; background: #168cff; border-color: #43a5ff; }
+
+/* SR */
+.stat-sr {
+    border: 1px solid transparent;
+}
+
+.stat-sr.lic-R { color: #fff; background: #d71920; border-color: #ef3a40; }
+.stat-sr.lic-D { color: #fff; background: #f28c00; border-color: #ffab32; }
+.stat-sr.lic-C { color: #111; background: #f1d600; border-color: #ffe33d; }
+.stat-sr.lic-B { color: #fff; background: #159447; border-color: #27bd64; }
+.stat-sr.lic-A { color: #fff; background: #168cff; border-color: #43a5ff; }
+
+/* =========================================================
+   ICÔNE PILOTE
+   ========================================================= */
+
+.driver-badge {
+    width: 100%;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.driver-badge img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    border: 0;
+    outline: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5));
+}
+
+/* =========================================================
+   ÉDITEUR
+   ========================================================= */
+
+.editor {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    width: 390px;
+    max-height: calc(100% - 32px);
+    overflow: auto;
+    z-index: 20;
+    padding: 14px;
+    background: linear-gradient(180deg, #0f1b29, #0b141f);
+    border: 1px solid #31506c;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .55);
+}
+
+.editor:empty {
+    display: none;
+}
+
+.editor-title {
+    color: #edf3f8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .6px;
+}
+
+.editor-driver-name {
+    margin-top: 5px;
+    color: #1cc6f4;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.editor-userid {
+    margin-top: 2px;
+    color: #5e7389;
+    font-size: 7px;
+}
+
+.editor-section-title {
+    margin: 14px 0 7px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #27394d;
+    color: #71859a;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: .8px;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+.icon-choice {
+    padding: 5px 3px;
+    border: 1px solid #23364a;
+    border-radius: 6px;
+    background: #0a121c;
+    text-align: center;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.icon-choice:hover {
+    border-color: #397ead;
+    background: #101d2b;
+}
+
+.icon-choice.active {
+    border-color: #168cff;
+    background: #102b45;
+    box-shadow: inset 0 -2px #168cff;
+}
+
+.icon-choice-image {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-choice-image img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    border: 0;
+    outline: 0;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .45));
+}
+
+.icon-choice-name {
+    margin-top: 3px;
+    color: #879bad;
+    font-size: 7px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.editor-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 11px;
+}
+
+.editor-actions-right {
+    display: flex;
+    gap: 6px;
+}
+
+.save-button,
+.cancel-button,
+.delete-button {
+    height: 27px;
+    padding: 0 11px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.save-button {
+    background: linear-gradient(180deg, #148a55, #10683f);
+    border: 1px solid #20b66d;
+    color: #fff;
+}
+
+.save-button::before {
+    content: "✓";
+    font-size: 10px;
+}
+
+.cancel-button {
+    background: linear-gradient(180deg, #273545, #182331);
+    border: 1px solid #34475c;
+    color: #b3c1cf;
+}
+
+.cancel-button::before {
+    content: "×";
+    font-size: 11px;
+}
+
+.delete-button {
+    background: linear-gradient(180deg, #56252e, #35191f);
+    border: 1px solid #793640;
+    color: #f09aa4;
+}
+
+.delete-button::before {
+    content: "♲";
+    font-size: 10px;
+}
+
+/* =========================================================
+   GESTION DES DÉBORDEMENTS
+   ========================================================= */
+
+.content,
+.panel,
+.list,
+.session-list,
+.session-driver-row {
+    scrollbar-width: thin;
+}
+
+.content {
+    overflow: hidden;
+}

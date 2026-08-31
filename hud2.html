@@ -1,0 +1,694 @@
+<!-- =========================================================
+     iRACING HUD 2
+     VERSION NOUVELLE
+     
+     - CAR LAYER : conservé
+     - DRAPEAUX : structure compatible ancien système
+     - PISTE : valeurs dynamiques uniquement
+     - METEO : valeurs dynamiques uniquement
+     - Les titres graphiques présents dans hud2.png
+       ne sont PAS recréés en HTML
+========================================================= -->
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>iRacing HUD 2</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700&family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700&family=Roboto+Mono:wght@500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/hud2.css">
+</head>
+
+<body>
+
+<div id="hud" class="hud-container">
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="hud-background"></div>
+
+
+    <!-- =====================================================
+         VOITURE
+         NE PAS MODIFIER
+    ====================================================== -->
+
+    <section class="car-layer">
+
+        <!-- ================= FREINS ================= -->
+
+        <div class="brakes-zone">
+
+            <div class="brake-item fl">
+                <svg class="arc-svg" viewBox="0 0 100 100">
+                    <path
+                        class="arc-bg"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                    />
+                    <path
+                        id="arc-fl"
+                        class="arc-fill"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                        stroke-dasharray="0 100"
+                    />
+                </svg>
+                <span id="fl-brake-val" class="brake-temp">0</span>
+            </div>
+
+            <div class="brake-item fr">
+                <svg class="arc-svg" viewBox="0 0 100 100">
+                    <path
+                        class="arc-bg"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                    />
+                    <path
+                        id="arc-fr"
+                        class="arc-fill"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                        stroke-dasharray="0 100"
+                    />
+                </svg>
+                <span id="fr-brake-val" class="brake-temp">0</span>
+            </div>
+
+            <div class="brake-item rl">
+                <svg class="arc-svg" viewBox="0 0 100 100">
+                    <path
+                        class="arc-bg"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                    />
+                    <path
+                        id="arc-rl"
+                        class="arc-fill"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                        stroke-dasharray="0 100"
+                    />
+                </svg>
+                <span id="rl-brake-val" class="brake-temp">0</span>
+            </div>
+
+            <div class="brake-item rr">
+                <svg class="arc-svg" viewBox="0 0 100 100">
+                    <path
+                        class="arc-bg"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                    />
+                    <path
+                        id="arc-rr"
+                        class="arc-fill"
+                        d="M15 80 A45 45 0 1 1 84.9 80"
+                        pathLength="100"
+                        stroke-dasharray="0 100"
+                    />
+                </svg>
+                <span id="rr-brake-val" class="brake-temp">0</span>
+            </div>
+
+        </div>
+
+
+        <!-- ================= PNEU FL ================= -->
+
+        <div class="car-tire-box fl-car">
+
+            <div class="tire-data">
+                <span id="fl-temp-avg" class="tire-temp">0</span>
+                <span id="fl-psi-val" class="tire-psi">0.0</span>
+
+                <div class="wear-bar-track">
+                    <div id="fl-wear-bar" class="wear-bar-fill"></div>
+                </div>
+
+                <span id="fl-wear-val" class="wear-pct">0%</span>
+            </div>
+
+            <div class="tire-graphic">
+                <div id="fl-strip-o" class="strip"></div>
+                <div id="fl-strip-m" class="strip"></div>
+                <div id="fl-strip-i" class="strip"></div>
+            </div>
+
+        </div>
+
+
+        <!-- ================= PNEU FR ================= -->
+
+        <div class="car-tire-box fr-car">
+
+            <div class="tire-graphic">
+                <div id="fr-strip-i" class="strip"></div>
+                <div id="fr-strip-m" class="strip"></div>
+                <div id="fr-strip-o" class="strip"></div>
+            </div>
+
+            <div class="tire-data">
+                <span id="fr-temp-avg" class="tire-temp">0</span>
+                <span id="fr-psi-val" class="tire-psi">0.0</span>
+
+                <div class="wear-bar-track">
+                    <div id="fr-wear-bar" class="wear-bar-fill"></div>
+                </div>
+
+                <span id="fr-wear-val" class="wear-pct">0%</span>
+            </div>
+
+        </div>
+
+
+        <!-- ================= PNEU RL ================= -->
+
+        <div class="car-tire-box rl-car">
+
+            <div class="tire-data">
+                <span id="rl-temp-avg" class="tire-temp">0</span>
+                <span id="rl-psi-val" class="tire-psi">0.0</span>
+
+                <div class="wear-bar-track">
+                    <div id="rl-wear-bar" class="wear-bar-fill"></div>
+                </div>
+
+                <span id="rl-wear-val" class="wear-pct">0%</span>
+            </div>
+
+            <div class="tire-graphic">
+                <div id="rl-strip-o" class="strip"></div>
+                <div id="rl-strip-m" class="strip"></div>
+                <div id="rl-strip-i" class="strip"></div>
+            </div>
+
+        </div>
+
+
+        <!-- ================= PNEU RR ================= -->
+
+        <div class="car-tire-box rr-car">
+
+            <div class="tire-graphic">
+                <div id="rr-strip-i" class="strip"></div>
+                <div id="rr-strip-m" class="strip"></div>
+                <div id="rr-strip-o" class="strip"></div>
+            </div>
+
+            <div class="tire-data">
+                <span id="rr-temp-avg" class="tire-temp">0</span>
+                <span id="rr-psi-val" class="tire-psi">0.0</span>
+
+                <div class="wear-bar-track">
+                    <div id="rr-wear-bar" class="wear-bar-fill"></div>
+                </div>
+
+                <span id="rr-wear-val" class="wear-pct">0%</span>
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONDITIONS ================= -->
+
+        <div class="conditions-zone">
+
+            <div class="cond-row fuel">
+                <span id="val-fuel" class="cond-value">0.0</span>
+                <div class="bar-track">
+                    <div id="bar-fuel" class="bar-fill green"></div>
+                </div>
+            </div>
+
+            <div class="cond-row water">
+                <span id="val-water" class="cond-value">0</span>
+                <div class="bar-track">
+                    <div id="bar-water" class="bar-fill blue"></div>
+                </div>
+            </div>
+
+            <div class="cond-row battery">
+                <span id="val-battery" class="cond-value">0.0</span>
+                <div class="bar-track">
+                    <div id="bar-battery" class="bar-fill green"></div>
+                </div>
+            </div>
+
+            <div class="cond-row oil">
+                <span id="val-oil" class="cond-value">0</span>
+                <div class="bar-track">
+                    <div id="bar-oil" class="bar-fill orange"></div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ================= INPUTS ================= -->
+
+        <div class="inputs-zone">
+
+            <div class="input-col clutch">
+                <div class="v-track">
+                    <div id="fill-clutch" class="v-fill blue"></div>
+                </div>
+                <span id="txt-clutch" class="pct">0%</span>
+            </div>
+
+            <div class="input-col throttle">
+                <div class="v-track">
+                    <div id="fill-throttle" class="v-fill green"></div>
+                </div>
+                <span id="txt-throttle" class="pct">0%</span>
+            </div>
+
+            <div class="input-col brake">
+                <div class="v-track">
+                    <div id="fill-brake" class="v-fill red"></div>
+                </div>
+                <span id="txt-brake" class="pct">0%</span>
+            </div>
+
+        </div>
+
+
+        <!-- ================= DEGATS ================= -->
+
+        <div id="alerte-degats" class="damage-alert"></div>
+
+
+        <!-- ================= PERFORMANCES ================= -->
+
+        <div class="perf-zone">
+
+            <div class="perf-block">
+                <span id="val-speed" class="speed-val">0</span>
+            </div>
+
+            <div class="perf-block">
+                <span id="val-rpm" class="rpm-val">0</span>
+
+                <div class="rpm-leds-bar">
+                    <div id="fill-rpm" class="rpm-leds-fill"></div>
+                </div>
+            </div>
+
+            <div class="perf-block">
+                <span id="val-gear" class="gear-val">N</span>
+            </div>
+
+            <div class="perf-block">
+                <span id="val-delta" class="delta-val">+0.000</span>
+                <span id="val-trend" class="trend-icon">↗</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COUCHE METEO / PISTE / DRAPEAUX
+         
+         IMPORTANT :
+         Les éléments graphiques fixes sont dans hud2.png.
+         Ici on garde uniquement les éléments dynamiques.
+    ====================================================== -->
+
+    <section class="weather-layer">
+
+
+        <!-- =================================================
+             DRAPEAUX
+             Même logique que l'ancien système :
+             .case-drapeau
+             .voile-sombre
+             .titre-drapeau
+             .statut-drapeau
+             .actif
+        ================================================== -->
+
+        <div id="section-drapeaux">
+
+            <div id="drapeau-vert" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    LIBRE / GO
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-jaune" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    DANGER
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-rouge" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    DISQUALIFICATION
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-bleu" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    DÉPASSEMENT
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-blanc" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    LAST LAP
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-debris" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    FULL YELLOW
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-damier" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    FIN DE COURSE
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-pneus" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    ADHÉRENCE
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-meatball" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    MEATBALL
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-stop-go" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    STOP &amp; GO
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-pit" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    PIT PASSAGE
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+
+            <div id="drapeau-avertissement" class="case-drapeau">
+                <div class="voile-sombre"></div>
+
+                <span class="titre-drapeau">
+                    AVERTISSEMENT
+                </span>
+
+                <div class="statut-drapeau">
+                    <span class="point-statut"></span>
+                    ACTIF
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PISTE
+             
+             Les intitulés LAST / BEST / LAP / etc.
+             restent dans l'image.
+             
+             On garde uniquement les valeurs et les IDs.
+        ================================================== -->
+
+        <div id="section-piste">
+
+            <div class="ligne-piste" id="ligne-last">
+                <div id="piste-dernier-tour" class="valeur-piste">
+                    <span class="dynamic-value">--:--.---</span>
+                </div>
+            </div>
+
+
+            <div class="ligne-piste" id="ligne-best">
+                <div id="piste-meilleur-tour" class="valeur-piste">
+                    <span class="dynamic-value">--:--.---</span>
+                </div>
+            </div>
+
+
+            <div class="ligne-piste" id="ligne-lap">
+                <div id="piste-tours" class="valeur-piste">
+                    <span class="dynamic-value">0 / --</span>
+                </div>
+            </div>
+
+
+            <div class="ligne-piste" id="ligne-time">
+                <div id="piste-temps-session" class="valeur-piste">
+                    <span class="dynamic-value">00:00:00</span>
+                </div>
+            </div>
+
+
+            <div class="ligne-piste" id="ligne-cons">
+                <div id="piste-consommation" class="valeur-piste">
+                    <span class="dynamic-value">0.00</span>
+                </div>
+            </div>
+
+
+            <div class="ligne-piste" id="ligne-tours">
+                <div id="piste-tours-restants" class="valeur-piste">
+                    <span class="dynamic-value">0</span>
+                </div>
+            </div>
+
+
+            <div class="ligne-piste" id="ligne-inc">
+                <div id="piste-incidents" class="valeur-piste">
+                    <span class="dynamic-value">0</span>
+                </div>
+            </div>
+
+
+            <div class="ligne-piste" id="ligne-joker">
+                <div id="piste-joker" class="valeur-piste">
+                    <span class="dynamic-value">OK</span>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             METEO
+             
+             Les intitulés AIR / HUM / VENT / DIR / TRACK / EAU
+             sont dans hud2.png.
+             
+             On conserve uniquement les valeurs dynamiques.
+        ================================================== -->
+
+        <div id="section-meteo">
+
+
+            <!-- AIR -->
+
+            <div id="meteo-air" class="valeur-meteo">
+                <span class="weather-value">--.-</span>
+              
+            </div>
+
+            <div id="jauge-air-container" class="jauge-container">
+                <div id="jauge-barre-air" class="jauge-barre"></div>
+            </div>
+
+
+            <!-- DIRECTION -->
+
+            <div id="meteo-direction" class="valeur-meteo">
+                <span class="weather-value">---</span>
+            </div>
+
+          <div class="boussole-container">
+    <div class="boussole-en-tete">
+        <span class="label-dir">DIR.</span>
+        <span class="valeur-cap">277</span>
+    </div>
+    <div class="cadran-boussole">
+        <span class="point-cardinal n">N</span>
+        <span class="point-cardinal e">E</span>
+        <span class="point-cardinal s">S</span>
+        <span class="point-cardinal w">W</span>
+        <div id="boussole-aiguille">
+            <div class="fleche-boussole"></div>
+        </div>
+    </div>
+</div>
+
+
+            <!-- HUMIDITE -->
+
+            <div id="meteo-humidite" class="valeur-meteo">
+                <span class="weather-value">--</span>
+               
+            </div>
+
+            <div id="jauge-hum-container" class="jauge-container">
+                <div id="jauge-barre-humidite" class="jauge-barre"></div>
+            </div>
+
+
+            <!-- TRACK -->
+
+            <div id="meteo-piste" class="valeur-meteo">
+                <span class="weather-value">--.-</span>
+                
+            </div>
+
+            <div id="jauge-track-container" class="jauge-container">
+                <div id="jauge-barre-piste" class="jauge-barre"></div>
+            </div>
+
+
+            <!-- VENT -->
+
+            <div id="meteo-vent" class="valeur-meteo">
+                <span class="weather-value">--</span>
+               
+            </div>
+
+            <div id="jauge-vent-container" class="jauge-container">
+                <div id="jauge-barre-vent" class="jauge-barre"></div>
+            </div>
+
+
+            <!-- EAU -->
+
+            <div id="meteo-pluie" class="valeur-meteo">
+                <span class="weather-value">--</span>
+              
+            </div>
+
+            <div id="jauge-eau-container" class="jauge-container">
+                <div id="jauge-barre-pluie" class="jauge-barre"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script src="js/hud2.js"></script>
+
+</body>
+</html>

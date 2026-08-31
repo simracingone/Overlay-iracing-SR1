@@ -1,0 +1,865 @@
+/* =========================================================
+   iRACING HUD
+   ========================================================= */
+
+:root {
+    --font-eurostile: 'Orbitron', 'Eurostile', sans-serif;
+    --font-exo: 'Exo 2', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+    --cyan: #00d4ff;
+    --cyan-soft: #00b4ff;
+    --blue: #008cff;
+    --green: #2ed573;
+    --red: #ff3040;
+    --orange: #ffa502;
+    --white: #eaf5ff;
+    --grey: #8da2b5;
+    --dark: #030611;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-transform: uppercase;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #030611;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hud-container {
+    position: relative;
+    width: 1024px;
+    height: 683px;
+    flex: 0 0 1024px;
+    transform-origin: center center;
+    overflow: hidden;
+}
+
+.hud-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.panel-header {
+    position: absolute;
+    z-index: 5;
+    font-family: var(--font-eurostile);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.1px;
+    color: var(--cyan);
+    white-space: nowrap;
+    text-shadow: 0 0 5px rgba(0,212,255,.75), 0 0 14px rgba(0,212,255,.25);
+    pointer-events: none;
+}
+
+.title-brakes {
+    top: 50px;
+    left: 110px;
+}
+
+.title-conditions {
+    top: 362px;
+    left: 125px;
+}
+
+.title-inputs {
+    top: 50px;
+    right: 151px;
+}
+
+.title-perf {
+    top: 345px;
+    right: 120px;
+}
+
+/* =========================================================
+   FREINS
+   ========================================================= */
+
+.brakes-zone {
+    position: absolute;
+    top: 105px;
+    left: 88px;
+    width: 210px;
+    height: 205px;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.brake-item {
+    position: absolute;
+    width: 92px;
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.brake-item.fl {
+    top: 0;
+    left: 0;
+}
+
+.brake-item.fr {
+    top: 0;
+    right: 0;
+}
+
+.brake-item.rl {
+    bottom: 0;
+    left: 0;
+}
+
+.brake-item.rr {
+    bottom: 0;
+    right: 0;
+}
+
+.label-wheel {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    font-family: var(--font-exo);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: .45px;
+    color: #9aafc2;
+    white-space: nowrap;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.brake-item.fl .label-wheel,
+.brake-item.fr .label-wheel {
+    top: -25px;
+    left: -20px;
+}
+
+.brake-item.rl .label-wheel,
+.brake-item.rr .label-wheel {
+    top: -5px;
+    left: -20px;
+}
+
+.arc-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 88px;
+    height: 88px;
+    transform: rotate(-90deg);
+    overflow: visible;
+    pointer-events: none;
+}
+
+.brake-item.fl .arc-svg {
+    top: -10px;
+    left: -30px;
+}
+
+.brake-item.rl .arc-svg {
+    top: 10px;
+    left: -30px;
+}
+
+.brake-item.fr .arc-svg {
+    top: -10px;
+    left: -22px;
+}
+
+.brake-item.rr .arc-svg {
+    top: 10px;
+    left: -22px;
+}
+
+/* Halo fixe uniquement */
+.dial-halo {
+    display: none !important;
+}
+
+.arc-fill {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 14; /* Monte à 12, 14 ou 16 selon la largeur souhaitée */
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+    transition: stroke-dasharray .10s linear, stroke .15s linear, filter .15s linear;
+    filter: drop-shadow(0 0 3px rgba(46,213,115,.55));
+}
+
+.arc-bg {
+    fill: none;
+    stroke: rgba(255,255,255,.055);
+    stroke-width: 12; /* Ajuste l'épaisseur globale ici */
+}
+
+.arc-fill {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 12; /* Même épaisseur ici */
+    stroke-linecap: butt;
+    stroke-linejoin: miter; /* Évite les déformations sur les bords épais */
+    transition: stroke-dasharray .10s linear, stroke .15s linear, filter .15s linear;
+    filter: drop-shadow(0 0 3px rgba(46,213,115,.55));
+}
+.dial-ticks line {
+    stroke: rgba(210,230,245,.58);
+    stroke-width: 1;
+}
+
+.dial-dots circle {
+    fill: rgba(165,205,230,.62);
+}
+
+.dial-dots {
+    display: none !important;
+}
+
+/* =========================================================
+   TEMPÉRATURE FREIN
+   ========================================================= */
+
+.brake-temp {
+    position: absolute;
+    bottom: -9px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1;
+    text-shadow: 0 0 5px rgba(0,212,255,.55);
+    pointer-events: none;
+}
+
+.brake-temp small {
+    font-size: 7px;
+    margin-left: 1px;
+    color: inherit;
+}
+
+.brake-item.fl .brake-temp,
+.brake-item.fr .brake-temp {
+    bottom: -9px;
+    left: -20px;
+}
+
+.brake-item.rl .brake-temp,
+.brake-item.rr .brake-temp {
+    bottom: -22px;
+    left: -20px;
+}
+
+/* =========================================================
+   PNEUS
+   ========================================================= */
+
+.car-tire-box {
+    position: absolute;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    pointer-events: none;
+}
+
+.fl-car {
+    top: 137px;
+    left: 290px;
+}
+
+.fr-car {
+    top: 137px;
+    right: 290px;
+}
+
+.rl-car {
+    top: 458px;
+    left: 290px;
+}
+
+.rr-car {
+    top: 458px;
+    right: 290px;
+}
+
+.tire-graphic {
+    width: 40px;
+    height: 68px;
+    flex: 0 0 40px;
+    display: flex;
+    overflow: hidden;
+    background: #030a14;
+    border: 1px solid rgba(0,212,255,.55);
+    border-radius: 4px;
+    box-shadow: 0 0 7px rgba(0,100,255,.12), inset 0 0 5px rgba(0,0,0,.6);
+}
+
+.strip {
+    flex: 1;
+    height: 100%;
+    background: #0a192f;
+    border-right: 1px solid rgba(0,0,0,.6);
+    transition: background-color .15s linear, box-shadow .15s linear;
+}
+
+.strip:last-child {
+    border-right: none;
+}
+
+.tire-data {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 58px;
+}
+
+.align-left {
+    text-align: right;
+    align-items: flex-end;
+}
+
+.align-right {
+    text-align: left;
+    align-items: flex-start;
+}
+
+.tire-tag {
+    font-family: var(--font-exo);
+    font-size: 8px;
+    color: var(--grey);
+    font-weight: 700;
+    line-height: 11px;
+    letter-spacing: .4px;
+}
+
+.tire-avg-temp {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan-soft);
+    line-height: 15px;
+    white-space: nowrap;
+    text-shadow: 0 0 5px rgba(0,212,255,.35);
+}
+
+.tire-avg-temp small {
+    font-size: 8px;
+    color: var(--cyan-soft);
+}
+
+.psi-txt {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #fff;
+    font-weight: 700;
+    line-height: 13px;
+    white-space: nowrap;
+}
+
+.psi-txt small {
+    font-size: 7px;
+    color: var(--grey);
+}
+
+.wear-bar-track {
+    width: 50px;
+    height: 3px;
+    background: rgba(255,255,255,.10);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 3px;
+}
+
+.wear-bar-fill {
+    height: 100%;
+    width: 100%;
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(46,213,115,.55);
+    transition: width .15s linear;
+}
+
+.wear-pct {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--green);
+    font-weight: 700;
+    line-height: 11px;
+}
+
+/* =========================================================
+   CONDITIONS
+   ========================================================= */
+
+.conditions-zone {
+    position: absolute;
+    top: 395px;
+    left: 88px;
+    width: 210px;
+    height: 195px;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.cond-row {
+    position: relative;
+    width: 100%;
+    height: 42px;
+}
+
+.label-cond {
+    position: absolute;
+    top: -5px;
+    left: 20px;
+    width: auto;
+    height: auto;
+    font-family: var(--font-exo);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey);
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+.cond-row .val {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: auto;
+    height: auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.cond-row.fuel .label-cond {
+    top: -12px;
+    left: 20px;
+    font-size: 11px;
+}
+
+.cond-row.fuel .val {
+    top: 10px;
+    left: 20px;
+    font-size: 12px;
+}
+
+.cond-row.water .label-cond {
+    top: 0;
+    left: 20px;
+    font-size: 11px;
+}
+
+.cond-row.water .val {
+    top: 20px;
+    left: 20px;
+    font-size: 12px;
+}
+
+.cond-row.battery .label-cond {
+    top: 10px;
+    left: 15px;
+    font-size: 11px;
+}
+
+.cond-row.battery .val {
+    top: 30px;
+    left: 20px;
+    font-size: 12px;
+}
+
+.cond-row.oil .label-cond {
+    top: 22px;
+    left: 20px;
+    font-size: 11px;
+}
+
+.cond-row.oil .val {
+    top: 42px;
+    left: 20px;
+    font-size: 12px;
+}
+
+.cond-row .val small {
+    font-size: 7px;
+    margin-left: 1px;
+    color: inherit;
+}
+
+.cond-row.fuel .val {
+    color: var(--green);
+}
+
+.cond-row.water .val {
+    color: var(--cyan-soft);
+}
+
+.cond-row.battery .val {
+    color: var(--green);
+}
+
+.cond-row.oil .val {
+    color: var(--orange);
+}
+
+.bar-track {
+    position: absolute;
+    top: 15px;
+    left: 110px;
+    width: 82px;
+    height: 4px;
+    background: rgba(255,255,255,.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 0%;
+    transition: width .2s linear;
+}
+
+.bar-fill.green {
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(46,213,115,.45);
+}
+
+.bar-fill.blue {
+    background: var(--cyan-soft);
+    box-shadow: 0 0 6px rgba(0,180,255,.45);
+}
+
+.bar-fill.orange {
+    background: var(--orange);
+    box-shadow: 0 0 6px rgba(255,165,2,.45);
+}
+
+.scale-min,
+.scale-max {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #57606f;
+}
+
+.cond-row .scale-min {
+    position: absolute;
+    top: 22px;
+    left: 110px;
+}
+
+.cond-row .scale-max {
+    position: absolute;
+    top: 22px;
+    left: 178px;
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.inputs-zone {
+    position: absolute;
+    top: 107px;
+    left: 726px;
+    width: 210px;
+    height: 190px;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.input-col {
+    position: absolute;
+    top: 0;
+    width: 60px;
+    height: 100%;
+}
+
+.input-col.clutch {
+    left: -20px;
+}
+
+.input-col.throttle {
+    left: 70px;
+}
+
+.input-col.brake {
+    left: 150px;
+}
+
+.label-input {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-exo);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--grey);
+    white-space: nowrap;
+    letter-spacing: .2px;
+}
+
+.v-track {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    width: 18px;
+    height: 105px;
+    box-sizing: border-box;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(120,170,210,.22);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.v-fill {
+    width: 100%;
+    height: 0%;
+    min-height: 0;
+    box-sizing: border-box;
+    transition: height .05s linear;
+}
+
+.v-fill.blue {
+    background: var(--cyan-soft);
+    box-shadow: 0 0 9px rgba(0,180,255,.5);
+}
+
+.v-fill.green {
+    background: var(--green);
+    box-shadow: 0 0 9px rgba(46,213,115,.5);
+}
+
+.v-fill.red {
+    background: var(--red);
+    box-shadow: 0 0 9px rgba(255,71,87,.5);
+}
+
+.pct {
+    position: absolute;
+    top: 150px;
+    left: 25px;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.clutch .pct {
+    color: var(--cyan-soft);
+}
+
+.throttle .pct {
+    color: var(--green);
+}
+
+.brake .pct {
+    color: var(--red);
+}
+
+/* =========================================================
+   PERFORMANCES
+   ========================================================= */
+
+.perf-zone {
+    position: absolute;
+    top: 360px;
+    right: 88px;
+    width: 210px;
+    height: 250px;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.perf-block {
+    position: relative;
+    width: 100%;
+    height: 50px;
+}
+
+.label-perf {
+    position: absolute;
+    font-family: var(--font-exo);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey);
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+.label-speed {
+    top: 5px;
+    left: 60px;
+}
+
+.label-rpm {
+    top: 3px;
+    left: 60px;
+}
+
+.label-gear {
+    top: 14px;
+    left: 60px;
+}
+
+.label-delta {
+    top: 14px;
+    left: 60px;
+}
+
+.label-trend {
+    top: 14px;
+    left: 170px;
+}
+
+.speed-val {
+    position: absolute;
+    top: 25px;
+    left: 60px;
+    font-family: var(--font-eurostile);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--cyan-soft);
+    line-height: 1;
+}
+
+.speed-val small {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--grey);
+    margin-left: 3px;
+}
+
+.rpm-val {
+    position: absolute;
+    top: 25px;
+    left: 60px;
+    font-family: var(--font-eurostile);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--orange);
+    line-height: 1;
+}
+
+.rpm-val small {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--grey);
+    margin-left: 3px;
+}
+
+.rpm-leds-bar {
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    width: 140px;
+    height: 5px;
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,.11) 0px, rgba(255,255,255,.11) 5px, transparent 5px, transparent 8px);
+    overflow: hidden;
+}
+
+.rpm-leds-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2ed573 0%, #2ed573 60%, #ffa502 84%, #ff4757 100%);
+    transition: width .05s linear;
+}
+
+.gear-val {
+    position: absolute;
+    top: 35px;
+    left: 60px;
+    font-family: var(--font-eurostile);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+    text-shadow: 0 0 7px rgba(46,213,115,.3);
+}
+
+.delta-val {
+    position: absolute;
+    top: 35px;
+    left: 60px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+}
+
+.trend-icon {
+    position: absolute;
+    top: 35px;
+    right: 10px;
+    font-family: var(--font-exo);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+}
+
+
+
+
+/* =========================================================
+   DÉSACTIVATION INTERACTION
+   ========================================================= */
+
+.hud-bg,
+.panel-header,
+.brakes-zone,
+.car-tire-box,
+.conditions-zone,
+.inputs-zone,
+.perf-zone {
+    pointer-events: none;
+    user-select: none;
+}
+
+
+/* =========================================================
+   DÉPLACEMENT DE LA FENÊTRE ELECTRON
+   ========================================================= */
+
+.hud-container { -webkit-app-region: drag; }
+
+/* Les éléments qui doivent rester cliquables */
+button, input, select, textarea, a { -webkit-app-region: no-drag; }

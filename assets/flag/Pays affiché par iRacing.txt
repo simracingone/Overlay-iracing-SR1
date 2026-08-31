@@ -1,0 +1,257 @@
+# iRacing - Pays / territoires et codes à 2 lettres
+# Format : PAYS | CODE | IMAGE
+#
+# Remarque : iRacing a introduit les drapeaux sélectionnables via /data/lookup/flairs.
+# Les codes ci-dessous suivent les codes ISO 3166-1 alpha-2 et le nom d'image
+# conventionnel correspondant (code en minuscules + .png).
+# La liste exacte des flairs actifs iRacing peut différer de l'ensemble ISO.
+
+Afghanistan | AF | af.png
+Albania | AL | al.png
+Algeria | DZ | dz.png
+American Samoa | AS | as.png
+Andorra | AD | ad.png
+Angola | AO | ao.png
+Anguilla | AI | ai.png
+Antarctica | AQ | aq.png
+Antigua and Barbuda | AG | ag.png
+Argentina | AR | ar.png
+Armenia | AM | am.png
+Aruba | AW | aw.png
+Australia | AU | au.png
+Austria | AT | at.png
+Azerbaijan | AZ | az.png
+Bahamas | BS | bs.png
+Bahrain | BH | bh.png
+Bangladesh | BD | bd.png
+Barbados | BB | bb.png
+Belarus | BY | by.png
+Belgium | BE | be.png
+Belize | BZ | bz.png
+Benin | BJ | bj.png
+Bermuda | BM | bm.png
+Bhutan | BT | bt.png
+Bolivia, Plurinational State of | BO | bo.png
+Bonaire, Sint Eustatius and Saba | BQ | bq.png
+Bosnia and Herzegovina | BA | ba.png
+Botswana | BW | bw.png
+Bouvet Island | BV | bv.png
+Brazil | BR | br.png
+British Indian Ocean Territory | IO | io.png
+Brunei Darussalam | BN | bn.png
+Bulgaria | BG | bg.png
+Burkina Faso | BF | bf.png
+Burundi | BI | bi.png
+Cabo Verde | CV | cv.png
+Cambodia | KH | kh.png
+Cameroon | CM | cm.png
+Canada | CA | ca.png
+Cayman Islands | KY | ky.png
+Central African Republic | CF | cf.png
+Chad | TD | td.png
+Chile | CL | cl.png
+China | CN | cn.png
+Christmas Island | CX | cx.png
+Cocos (Keeling) Islands | CC | cc.png
+Colombia | CO | co.png
+Comoros | KM | km.png
+Congo | CG | cg.png
+Congo, The Democratic Republic of the | CD | cd.png
+Cook Islands | CK | ck.png
+Costa Rica | CR | cr.png
+Croatia | HR | hr.png
+Cuba | CU | cu.png
+Curaçao | CW | cw.png
+Cyprus | CY | cy.png
+Czechia | CZ | cz.png
+Côte d'Ivoire | CI | ci.png
+Denmark | DK | dk.png
+Djibouti | DJ | dj.png
+Dominica | DM | dm.png
+Dominican Republic | DO | do.png
+Ecuador | EC | ec.png
+Egypt | EG | eg.png
+El Salvador | SV | sv.png
+Equatorial Guinea | GQ | gq.png
+Eritrea | ER | er.png
+Estonia | EE | ee.png
+Eswatini | SZ | sz.png
+Ethiopia | ET | et.png
+Falkland Islands (Malvinas) | FK | fk.png
+Faroe Islands | FO | fo.png
+Fiji | FJ | fj.png
+Finland | FI | fi.png
+France | FR | fr.png
+French Guiana | GF | gf.png
+French Polynesia | PF | pf.png
+French Southern Territories | TF | tf.png
+Gabon | GA | ga.png
+Gambia | GM | gm.png
+Georgia | GE | ge.png
+Germany | DE | de.png
+Ghana | GH | gh.png
+Gibraltar | GI | gi.png
+Greece | GR | gr.png
+Greenland | GL | gl.png
+Grenada | GD | gd.png
+Guadeloupe | GP | gp.png
+Guam | GU | gu.png
+Guatemala | GT | gt.png
+Guernsey | GG | gg.png
+Guinea | GN | gn.png
+Guinea-Bissau | GW | gw.png
+Guyana | GY | gy.png
+Haiti | HT | ht.png
+Heard Island and McDonald Islands | HM | hm.png
+Holy See (Vatican City State) | VA | va.png
+Honduras | HN | hn.png
+Hong Kong | HK | hk.png
+Hungary | HU | hu.png
+Iceland | IS | is.png
+India | IN | in.png
+Indonesia | ID | id.png
+Iran, Islamic Republic of | IR | ir.png
+Iraq | IQ | iq.png
+Ireland | IE | ie.png
+Isle of Man | IM | im.png
+Israel | IL | il.png
+Italy | IT | it.png
+Jamaica | JM | jm.png
+Japan | JP | jp.png
+Jersey | JE | je.png
+Jordan | JO | jo.png
+Kazakhstan | KZ | kz.png
+Kenya | KE | ke.png
+Kiribati | KI | ki.png
+Korea, Democratic People's Republic of | KP | kp.png
+Korea, Republic of | KR | kr.png
+Kuwait | KW | kw.png
+Kyrgyzstan | KG | kg.png
+Lao People's Democratic Republic | LA | la.png
+Latvia | LV | lv.png
+Lebanon | LB | lb.png
+Lesotho | LS | ls.png
+Liberia | LR | lr.png
+Libya | LY | ly.png
+Liechtenstein | LI | li.png
+Lithuania | LT | lt.png
+Luxembourg | LU | lu.png
+Macao | MO | mo.png
+Madagascar | MG | mg.png
+Malawi | MW | mw.png
+Malaysia | MY | my.png
+Maldives | MV | mv.png
+Mali | ML | ml.png
+Malta | MT | mt.png
+Marshall Islands | MH | mh.png
+Martinique | MQ | mq.png
+Mauritania | MR | mr.png
+Mauritius | MU | mu.png
+Mayotte | YT | yt.png
+Mexico | MX | mx.png
+Micronesia, Federated States of | FM | fm.png
+Moldova, Republic of | MD | md.png
+Monaco | MC | mc.png
+Mongolia | MN | mn.png
+Montenegro | ME | me.png
+Montserrat | MS | ms.png
+Morocco | MA | ma.png
+Mozambique | MZ | mz.png
+Myanmar | MM | mm.png
+Namibia | NA | na.png
+Nauru | NR | nr.png
+Nepal | NP | np.png
+Netherlands | NL | nl.png
+New Caledonia | NC | nc.png
+New Zealand | NZ | nz.png
+Nicaragua | NI | ni.png
+Niger | NE | ne.png
+Nigeria | NG | ng.png
+Niue | NU | nu.png
+Norfolk Island | NF | nf.png
+North Macedonia | MK | mk.png
+Northern Mariana Islands | MP | mp.png
+Norway | NO | no.png
+Oman | OM | om.png
+Pakistan | PK | pk.png
+Palau | PW | pw.png
+Palestine, State of | PS | ps.png
+Panama | PA | pa.png
+Papua New Guinea | PG | pg.png
+Paraguay | PY | py.png
+Peru | PE | pe.png
+Philippines | PH | ph.png
+Pitcairn | PN | pn.png
+Poland | PL | pl.png
+Portugal | PT | pt.png
+Puerto Rico | PR | pr.png
+Qatar | QA | qa.png
+Romania | RO | ro.png
+Russian Federation | RU | ru.png
+Rwanda | RW | rw.png
+Réunion | RE | re.png
+Saint Barthélemy | BL | bl.png
+Saint Helena, Ascension and Tristan da Cunha | SH | sh.png
+Saint Kitts and Nevis | KN | kn.png
+Saint Lucia | LC | lc.png
+Saint Martin (French part) | MF | mf.png
+Saint Pierre and Miquelon | PM | pm.png
+Saint Vincent and the Grenadines | VC | vc.png
+Samoa | WS | ws.png
+San Marino | SM | sm.png
+Sao Tome and Principe | ST | st.png
+Saudi Arabia | SA | sa.png
+Senegal | SN | sn.png
+Serbia | RS | rs.png
+Seychelles | SC | sc.png
+Sierra Leone | SL | sl.png
+Singapore | SG | sg.png
+Sint Maarten (Dutch part) | SX | sx.png
+Slovakia | SK | sk.png
+Slovenia | SI | si.png
+Solomon Islands | SB | sb.png
+Somalia | SO | so.png
+South Africa | ZA | za.png
+South Georgia and the South Sandwich Islands | GS | gs.png
+South Sudan | SS | ss.png
+Spain | ES | es.png
+Sri Lanka | LK | lk.png
+Sudan | SD | sd.png
+Suriname | SR | sr.png
+Svalbard and Jan Mayen | SJ | sj.png
+Sweden | SE | se.png
+Switzerland | CH | ch.png
+Syrian Arab Republic | SY | sy.png
+Taiwan, Province of China | TW | tw.png
+Tajikistan | TJ | tj.png
+Tanzania, United Republic of | TZ | tz.png
+Thailand | TH | th.png
+Timor-Leste | TL | tl.png
+Togo | TG | tg.png
+Tokelau | TK | tk.png
+Tonga | TO | to.png
+Trinidad and Tobago | TT | tt.png
+Tunisia | TN | tn.png
+Turkmenistan | TM | tm.png
+Turks and Caicos Islands | TC | tc.png
+Tuvalu | TV | tv.png
+Türkiye | TR | tr.png
+Uganda | UG | ug.png
+Ukraine | UA | ua.png
+United Arab Emirates | AE | ae.png
+United Kingdom | GB | gb.png
+United States | US | us.png
+United States Minor Outlying Islands | UM | um.png
+Uruguay | UY | uy.png
+Uzbekistan | UZ | uz.png
+Vanuatu | VU | vu.png
+Venezuela, Bolivarian Republic of | VE | ve.png
+Viet Nam | VN | vn.png
+Virgin Islands, British | VG | vg.png
+Virgin Islands, U.S. | VI | vi.png
+Wallis and Futuna | WF | wf.png
+Western Sahara | EH | eh.png
+Yemen | YE | ye.png
+Zambia | ZM | zm.png
+Zimbabwe | ZW | zw.png
+Åland Islands | AX | ax.png

@@ -1,0 +1,16 @@
+{
+    "drivers": {
+        "406608": {
+            "name": "Herve Fraiiture",
+            "icon": "ami"
+        },
+        "569363": {
+            "name": "Philippe Mourier",
+            "icon": "team"
+        },
+        "615813": {
+            "name": "Stefan Bünter",
+            "icon": "top10"
+        }
+    }
+}

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>iRacing Live HUD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700&family=Orbitron:wght@700;800;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/voiture.css">
+</head>
+
+<body>
+
+<div class="hud-container">
+
+    <img src="assets/hud-voiture.png" class="hud-bg" alt="HUD iRacing">
+
+
+    <!-- =====================================================
+         1. ÉTAT DES FREINS
+         ===================================================== -->
+
+    <div class="panel-header title-brakes">
+        ÉTAT DES FREINS
+    </div>
+
+
+    <div class="brakes-zone">
+
+
+        <!-- =================================================
+             AVANT GAUCHE
+             ================================================= -->
+
+        <div class="brake-item fl">
+
+            <span class="label-wheel">
+                AVANT GAUCHE
+            </span>
+
+            <svg
+                class="arc-svg"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+            >
+
+                <circle
+                    class="dial-halo"
+                    cx="50"
+                    cy="50"
+                    r="46"
+                />
+
+                <path
+                    class="arc-bg"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                />
+
+                <!-- ARC ACTIF -->
+                <path
+                    class="arc-fill"
+                    id="arc-fl"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                    stroke-dasharray="0 200"
+                    stroke-dashoffset="0"
+                />
+
+                <g class="dial-ticks">
+
+                    <line x1="50" y1="8" x2="50" y2="13"/>
+                    <line x1="71" y1="14" x2="68" y2="18"/>
+                    <line x1="86" y1="29" x2="81" y2="32"/>
+                    <line x1="92" y1="50" x2="87" y2="50"/>
+                    <line x1="86" y1="71" x2="81" y2="68"/>
+                    <line x1="71" y1="86" x2="68" y2="82"/>
+                    <line x1="50" y1="92" x2="50" y2="87"/>
+                    <line x1="29" y1="86" x2="32" y2="82"/>
+                    <line x1="14" y1="71" x2="19" y2="68"/>
+                    <line x1="8" y1="50" x2="13" y2="50"/>
+                    <line x1="14" y1="29" x2="19" y2="32"/>
+                    <line x1="29" y1="14" x2="32" y2="18"/>
+
+                </g>
+
+                <g class="dial-dots">
+
+                    <circle cx="50" cy="22" r="1.1"/>
+                    <circle cx="78" cy="50" r="1.1"/>
+                    <circle cx="50" cy="78" r="1.1"/>
+                    <circle cx="22" cy="50" r="1.1"/>
+
+                    <circle cx="70" cy="30" r=".9"/>
+                    <circle cx="70" cy="70" r=".9"/>
+                    <circle cx="30" cy="70" r=".9"/>
+                    <circle cx="30" cy="30" r=".9"/>
+
+                </g>
+
+            </svg>
+
+            <div class="brake-temp">
+                <span id="fl-brake-val">0</span>
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             AVANT DROIT
+             ================================================= -->
+
+        <div class="brake-item fr">
+
+            <span class="label-wheel">
+                AVANT DROIT
+            </span>
+
+            <svg
+                class="arc-svg"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+            >
+
+                <circle
+                    class="dial-halo"
+                    cx="50"
+                    cy="50"
+                    r="46"
+                />
+
+                <path
+                    class="arc-bg"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                />
+
+                <!-- ARC ACTIF -->
+                <path
+                    class="arc-fill"
+                    id="arc-fr"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                    stroke-dasharray="0 200"
+                    stroke-dashoffset="0"
+                />
+
+                <g class="dial-ticks">
+
+                    <line x1="50" y1="8" x2="50" y2="13"/>
+                    <line x1="71" y1="14" x2="68" y2="18"/>
+                    <line x1="86" y1="29" x2="81" y2="32"/>
+                    <line x1="92" y1="50" x2="87" y2="50"/>
+                    <line x1="86" y1="71" x2="81" y2="68"/>
+                    <line x1="71" y1="86" x2="68" y2="82"/>
+                    <line x1="50" y1="92" x2="50" y2="87"/>
+                    <line x1="29" y1="86" x2="32" y2="82"/>
+                    <line x1="14" y1="71" x2="19" y2="68"/>
+                    <line x1="8" y1="50" x2="13" y2="50"/>
+                    <line x1="14" y1="29" x2="19" y2="32"/>
+                    <line x1="29" y1="14" x2="32" y2="18"/>
+
+                </g>
+
+                <g class="dial-dots">
+
+                    <circle cx="50" cy="22" r="1.1"/>
+                    <circle cx="78" cy="50" r="1.1"/>
+                    <circle cx="50" cy="78" r="1.1"/>
+                    <circle cx="22" cy="50" r="1.1"/>
+
+                    <circle cx="70" cy="30" r=".9"/>
+                    <circle cx="70" cy="70" r=".9"/>
+                    <circle cx="30" cy="70" r=".9"/>
+                    <circle cx="30" cy="30" r=".9"/>
+
+                </g>
+
+            </svg>
+
+            <div class="brake-temp">
+                <span id="fr-brake-val">0</span>
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ARRIÈRE GAUCHE
+             ================================================= -->
+
+        <div class="brake-item rl">
+
+            <span class="label-wheel">
+                ARRIÈRE GAUCHE
+            </span>
+
+            <svg
+                class="arc-svg"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+            >
+
+                <circle
+                    class="dial-halo"
+                    cx="50"
+                    cy="50"
+                    r="46"
+                />
+
+                <path
+                    class="arc-bg"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                />
+
+                <!-- ARC ACTIF -->
+                <path
+                    class="arc-fill"
+                    id="arc-rl"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                    stroke-dasharray="0 200"
+                    stroke-dashoffset="0"
+                />
+
+                <g class="dial-ticks">
+
+                    <line x1="50" y1="8" x2="50" y2="13"/>
+                    <line x1="71" y1="14" x2="68" y2="18"/>
+                    <line x1="86" y1="29" x2="81" y2="32"/>
+                    <line x1="92" y1="50" x2="87" y2="50"/>
+                    <line x1="86" y1="71" x2="81" y2="68"/>
+                    <line x1="71" y1="86" x2="68" y2="82"/>
+                    <line x1="50" y1="92" x2="50" y2="87"/>
+                    <line x1="29" y1="86" x2="32" y2="82"/>
+                    <line x1="14" y1="71" x2="19" y2="68"/>
+                    <line x1="8" y1="50" x2="13" y2="50"/>
+                    <line x1="14" y1="29" x2="19" y2="32"/>
+                    <line x1="29" y1="14" x2="32" y2="18"/>
+
+                </g>
+
+                <g class="dial-dots">
+
+                    <circle cx="50" cy="22" r="1.1"/>
+                    <circle cx="78" cy="50" r="1.1"/>
+                    <circle cx="50" cy="78" r="1.1"/>
+                    <circle cx="22" cy="50" r="1.1"/>
+
+                    <circle cx="70" cy="30" r=".9"/>
+                    <circle cx="70" cy="70" r=".9"/>
+                    <circle cx="30" cy="70" r=".9"/>
+                    <circle cx="30" cy="30" r=".9"/>
+
+                </g>
+
+            </svg>
+
+            <div class="brake-temp">
+                <span id="rl-brake-val">0</span>
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ARRIÈRE DROIT
+             ================================================= -->
+
+        <div class="brake-item rr">
+
+            <span class="label-wheel">
+                ARRIÈRE DROIT
+            </span>
+
+            <svg
+                class="arc-svg"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+            >
+
+                <circle
+                    class="dial-halo"
+                    cx="50"
+                    cy="50"
+                    r="46"
+                />
+
+                <path
+                    class="arc-bg"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                />
+
+                <!-- ARC ACTIF -->
+                <path
+                    class="arc-fill"
+                    id="arc-rr"
+                    d="M 15 80 A 45 45 0 1 1 84.9 80"
+                    pathLength="100"
+                    stroke-dasharray="0 200"
+                    stroke-dashoffset="0"
+                />
+
+                <g class="dial-ticks">
+
+                    <line x1="50" y1="8" x2="50" y2="13"/>
+                    <line x1="71" y1="14" x2="68" y2="18"/>
+                    <line x1="86" y1="29" x2="81" y2="32"/>
+                    <line x1="92" y1="50" x2="87" y2="50"/>
+                    <line x1="86" y1="71" x2="81" y2="68"/>
+                    <line x1="71" y1="86" x2="68" y2="82"/>
+                    <line x1="50" y1="92" x2="50" y2="87"/>
+                    <line x1="29" y1="86" x2="32" y2="82"/>
+                    <line x1="14" y1="71" x2="19" y2="68"/>
+                    <line x1="8" y1="50" x2="13" y2="50"/>
+                    <line x1="14" y1="29" x2="19" y2="32"/>
+                    <line x1="29" y1="14" x2="32" y2="18"/>
+
+                </g>
+
+                <g class="dial-dots">
+
+                    <circle cx="50" cy="22" r="1.1"/>
+                    <circle cx="78" cy="50" r="1.1"/>
+                    <circle cx="50" cy="78" r="1.1"/>
+                    <circle cx="22" cy="50" r="1.1"/>
+
+                    <circle cx="70" cy="30" r=".9"/>
+                    <circle cx="70" cy="70" r=".9"/>
+                    <circle cx="30" cy="70" r=".9"/>
+                    <circle cx="30" cy="30" r=".9"/>
+
+                </g>
+
+            </svg>
+
+            <div class="brake-temp">
+                <span id="rr-brake-val">0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         2. PNEUS OMI
+         ===================================================== -->
+
+    <div class="car-tire-box fl-car">
+
+        <div class="tire-data align-left">
+
+            <span class="tire-tag">FL</span>
+
+            <span class="tire-avg-temp">
+                <span id="fl-temp-avg">0</span>
+                <small>°C</small>
+            </span>
+
+            <div class="psi-txt">
+                <strong id="fl-psi-val">0.0</strong>
+                <small>PSI</small>
+            </div>
+
+            <div class="wear-bar-track">
+                <div
+                    class="wear-bar-fill"
+                    id="fl-wear-bar"
+                    style="width: 0%;"
+                ></div>
+            </div>
+
+            <span class="wear-pct" id="fl-wear-val">0%</span>
+
+        </div>
+
+        <div class="tire-graphic">
+
+            <div class="strip" id="fl-strip-o"></div>
+            <div class="strip" id="fl-strip-m"></div>
+            <div class="strip" id="fl-strip-i"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="car-tire-box fr-car">
+
+        <div class="tire-graphic">
+
+            <div class="strip" id="fr-strip-i"></div>
+            <div class="strip" id="fr-strip-m"></div>
+            <div class="strip" id="fr-strip-o"></div>
+
+        </div>
+
+        <div class="tire-data align-right">
+
+            <span class="tire-tag">FR</span>
+
+            <span class="tire-avg-temp">
+                <span id="fr-temp-avg">0</span>
+                <small>°C</small>
+            </span>
+
+            <div class="psi-txt">
+                <strong id="fr-psi-val">0.0</strong>
+                <small>PSI</small>
+            </div>
+
+            <div class="wear-bar-track">
+                <div
+                    class="wear-bar-fill"
+                    id="fr-wear-bar"
+                    style="width: 0%;"
+                ></div>
+            </div>
+
+            <span class="wear-pct" id="fr-wear-val">0%</span>
+
+        </div>
+
+    </div>
+
+
+    <div class="car-tire-box rl-car">
+
+        <div class="tire-data align-left">
+
+            <span class="tire-tag">RL</span>
+
+            <span class="tire-avg-temp">
+                <span id="rl-temp-avg">0</span>
+                <small>°C</small>
+            </span>
+
+            <div class="psi-txt">
+                <strong id="rl-psi-val">0.0</strong>
+                <small>PSI</small>
+            </div>
+
+            <div class="wear-bar-track">
+                <div
+                    class="wear-bar-fill"
+                    id="rl-wear-bar"
+                    style="width: 0%;"
+                ></div>
+            </div>
+
+            <span class="wear-pct" id="rl-wear-val">0%</span>
+
+        </div>
+
+        <div class="tire-graphic">
+
+            <div class="strip" id="rl-strip-o"></div>
+            <div class="strip" id="rl-strip-m"></div>
+            <div class="strip" id="rl-strip-i"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="car-tire-box rr-car">
+
+        <div class="tire-graphic">
+
+            <div class="strip" id="rr-strip-i"></div>
+            <div class="strip" id="rr-strip-m"></div>
+            <div class="strip" id="rr-strip-o"></div>
+
+        </div>
+
+        <div class="tire-data align-right">
+
+            <span class="tire-tag">RR</span>
+
+            <span class="tire-avg-temp">
+                <span id="rr-temp-avg">0</span>
+                <small>°C</small>
+            </span>
+
+            <div class="psi-txt">
+                <strong id="rr-psi-val">0.0</strong>
+                <small>PSI</small>
+            </div>
+
+            <div class="wear-bar-track">
+                <div
+                    class="wear-bar-fill"
+                    id="rr-wear-bar"
+                    style="width: 0%;"
+                ></div>
+            </div>
+
+            <span class="wear-pct" id="rr-wear-val">0%</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         3. CONDITIONS
+         ===================================================== -->
+
+    <div class="panel-header title-conditions">CONDITIONS</div>
+
+    <div class="conditions-zone">
+        <div class="cond-row fuel">
+            <span class="label-cond">CARBURANT</span>
+
+            <span class="val">
+                <span id="val-fuel">0.0</span>
+            </span>
+
+            <div class="bar-track">
+                <div
+                    class="bar-fill green"
+                    id="bar-fuel"
+                ></div>
+            </div>
+
+            <span class="scale-min">E</span>
+            <span class="scale-max">F</span>
+
+        </div>
+
+
+        <div class="cond-row water">
+
+            <span class="label-cond">TEMP. EAU</span>
+
+            <span class="val">
+                <span id="val-water">0</span>
+            </span>
+
+            <div class="bar-track">
+                <div
+                    class="bar-fill blue"
+                    id="bar-water"
+                ></div>
+            </div>
+
+            <span class="scale-min">60°C</span>
+            <span class="scale-max">120°C</span>
+
+        </div>
+
+
+        <div class="cond-row battery">
+
+            <span class="label-cond">BATTERIE</span>
+
+            <span class="val">
+                <span id="val-battery">0.0</span>
+            </span>
+
+            <div class="bar-track">
+                <div
+                    class="bar-fill green"
+                    id="bar-battery"
+                ></div>
+            </div>
+
+            <span class="scale-min">11V</span>
+            <span class="scale-max">15V</span>
+
+        </div>
+
+
+        <div class="cond-row oil">
+
+            <span class="label-cond">TEMP. HUILE</span>
+
+            <span class="val">
+                <span id="val-oil">0</span>
+            </span>
+
+            <div class="bar-track">
+                <div
+                    class="bar-fill orange"
+                    id="bar-oil"
+                ></div>
+            </div>
+
+            <span class="scale-min">60°C</span>
+            <span class="scale-max">150°C</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         4. INPUTS
+         ===================================================== -->
+
+    <div class="panel-header title-inputs">
+        INPUTS
+    </div>
+
+    <div class="inputs-zone">
+
+        <div class="input-col clutch">
+
+            <span class="label-input">
+                EMBRAYAGE
+            </span>
+
+            <div class="v-track">
+
+                <div
+                    class="v-fill blue"
+                    id="fill-clutch"
+                ></div>
+
+            </div>
+
+            <span
+                class="pct"
+                id="txt-clutch"
+            >
+                0%
+            </span>
+
+        </div>
+
+
+        <div class="input-col throttle">
+
+            <span class="label-input">
+                ACCÉLÉRATEUR
+            </span>
+
+            <div class="v-track">
+
+                <div
+                    class="v-fill green"
+                    id="fill-throttle"
+                ></div>
+
+            </div>
+
+            <span
+                class="pct"
+                id="txt-throttle"
+            >
+                0%
+            </span>
+
+        </div>
+
+
+        <div class="input-col brake">
+
+            <span class="label-input">
+                FREIN
+            </span>
+
+            <div class="v-track">
+
+                <div
+                    class="v-fill red"
+                    id="fill-brake"
+                ></div>
+
+            </div>
+
+            <span
+                class="pct"
+                id="txt-brake"
+            >
+                0%
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         5. PERFORMANCES
+         ===================================================== -->
+
+    <div class="panel-header title-perf">
+        PERFORMANCES
+    </div>
+<div id="alerte-degats" style="display:none; font-weight:bold; text-align:center; padding: 5px;"></div>
+    <div class="perf-zone">
+
+        <div class="perf-block speed-block">
+
+            <span class="label-perf label-speed">
+                VITESSE
+            </span>
+
+            <div class="speed-val">
+
+                <span id="val-speed">0</span>
+
+                <small>
+                    km/h
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="perf-block rpm-block">
+
+            <span class="label-perf label-rpm">
+                RÉGIME
+            </span>
+
+            <div class="rpm-val">
+
+                <span id="val-rpm">0</span>
+
+                <small>
+                    RPM
+                </small>
+
+            </div>
+
+            <div class="rpm-leds-bar">
+
+                <div
+                    class="rpm-leds-fill"
+                    id="fill-rpm"
+                ></div>
+
+            </div>
+
+            <span class="scale-min">
+                0
+            </span>
+
+            <span class="scale-max">
+                9K
+            </span>
+
+        </div>
+
+
+        <div class="perf-block gear-block">
+
+            <span class="label-perf label-gear">
+                RAPPORT
+            </span>
+
+            <div
+                class="gear-val"
+                id="val-gear"
+            >
+                N
+            </div>
+
+        </div>
+
+
+        <div class="perf-block delta-block">
+
+            <span class="label-perf label-delta">
+                DELTA
+            </span>
+
+            <span
+                class="delta-val"
+                id="val-delta"
+            >
+                +0.000
+            </span>
+
+            <span class="label-perf label-trend">
+                TENDANCE
+            </span>
+
+            <span
+                class="trend-icon"
+                id="val-trend"
+            >
+                ↗
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="js/voiture.js"></script>
+
+</body>
+</html>

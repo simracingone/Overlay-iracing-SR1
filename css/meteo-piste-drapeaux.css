@@ -1,0 +1,312 @@
+/* =========================================================
+   VARIABLES ET POLICES
+   ========================================================= */
+:root {
+    --font-title: 'Orbitron', sans-serif;
+    --font-exo: 'Rajdhani', sans-serif;
+    --font-value: 'Roboto Mono', monospace;
+    --cyan: #00d4ff;
+    --cyan-soft: #85e8ff;
+    --green: #2ed573;
+    --pink: #ff4757;
+    --orange: #ff9f43;
+    --violet: #a55eea;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    text-transform: uppercase;
+}
+
+body {
+    background: transparent;
+    overflow: hidden;
+}
+
+#hud-container {
+    position: relative;
+    width: 1250px;
+    height: 493px;
+    background: url('../assets/meteo-flag-piste.png') no-repeat center center;
+    background-size: 1250px 493px;
+}
+
+/* =========================================================
+   TITRES PRINCIPAUX DES BLOCS
+   ========================================================= */
+.panel-header {
+    position: absolute;
+    top: 18px;
+    font-family: var(--font-title);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--cyan) !important;
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+}
+
+.header-drapeaux { left: 210px; transform: translateX(-50%); }
+.header-piste    { left: 600px; }
+.header-meteo    { left: 1050px; transform: translateX(-50%); }
+
+/* =========================================================
+   1. SECTION DRAPEAUX
+   ========================================================= */
+.case-drapeau {
+    position: absolute;
+    width: 112px;
+    height: 86px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.case-drapeau .voile-sombre {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(5, 10, 20, 0.88);
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.titre-drapeau {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-exo);
+    font-size: 11px;
+    font-weight: 700;
+    color: #4a5a6a !important;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.statut-drapeau {
+    position: absolute;
+    bottom: 4px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-family: var(--font-exo);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--green) !important;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.point-statut {
+    width: 5px;
+    height: 5px;
+    background-color: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--green);
+}
+
+.case-drapeau.actif .voile-sombre { opacity: 0; }
+.case-drapeau.actif .titre-drapeau { color: var(--white) !important; text-shadow: 0 0 6px rgba(255, 255, 255, 0.6); }
+.case-drapeau.actif .statut-drapeau { opacity: 1; }
+
+#drapeau-vert          { top: 57px;  left: 27px; }
+#drapeau-jaune         { top: 57px;  left: 157px; }
+#drapeau-rouge         { top: 57px;  left: 285px; }
+
+#drapeau-bleu          { top: 167px; left: 27px; }
+#drapeau-blanc         { top: 167px; left: 157px; }
+#drapeau-debris        { top: 167px; left: 285px; }
+
+#drapeau-damier        { top: 272px; left: 27px; }
+#drapeau-pneus         { top: 272px; left: 157px; }
+#drapeau-meatball      { top: 272px; left: 285px; }
+
+#drapeau-stop-go       { top: 377px; left: 27px; }
+#drapeau-pit           { top: 377px; left: 157px; }
+#drapeau-avertissement { top: 377px; left: 285px; }
+
+/* =========================================================
+   2. SECTION PISTE
+   ========================================================= */
+.ligne-piste {
+    position: absolute;
+    left: 515px;
+    width: 340px;
+    display: flex;
+    align-items: center;
+}
+
+.label-piste {
+    font-family: var(--font-exo);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cyan) !important;
+    width: 110px;
+}
+
+.valeur-piste {
+    font-family: var(--font-value);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white) !important;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.unite-piste {
+    font-family: var(--font-exo);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange) !important;
+    width: 50px;
+    text-align: right;
+}
+
+#ligne-best .valeur-piste  { color: var(--pink) !important; }
+#ligne-tours .label-piste  { color: var(--orange) !important; }
+#ligne-tours .valeur-piste { color: var(--white) !important; }
+#ligne-inc .label-piste, #ligne-inc .valeur-piste { color: var(--green) !important; }
+#ligne-joker .label-piste, #ligne-joker .valeur-piste { color: var(--violet) !important; }
+
+#ligne-last  { top: 68px; }
+#ligne-best  { top: 120px; }
+#ligne-lap   { top: 172px; }
+#ligne-time  { top: 230px; }
+#ligne-cons  { top: 280px; }
+#ligne-tours { top: 330px; }
+#ligne-inc   { top: 385px; }
+#ligne-joker { top: 435px; }
+
+/* =========================================================
+   3. SECTION MÉTÉO
+   ========================================================= */
+.bloc-meteo-titre {
+    position: absolute;
+    font-family: var(--font-exo);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cyan) !important;
+}
+
+.valeur-meteo {
+    position: absolute;
+    font-family: var(--font-value);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white) !important;
+}
+
+.weather-value {
+    display: inline-block;
+}
+
+.valeur-meteo .unite {
+    font-size: 13px;
+    color: var(--cyan-soft) !important;
+    margin-left: 4px;
+}
+
+/* Positions des titres */
+#titre-air   { top: 90px;  left: 915px; }
+#titre-hum   { top: 195px; left: 915px; }
+#titre-vent  { top: 320px; left: 915px; }
+#titre-dir   { top: 60px;  left: 1120px; }
+#titre-track { top: 265px; left: 1120px; color: var(--white) !important; }
+#titre-eau   { top: 370px; left: 1120px; }
+
+/* Positions uniques des blocs ciblés par le JS */
+#meteo-air       { top: 110px; left: 915px; }
+#meteo-humidite  { top: 215px; left: 915px; }
+#meteo-vent      { top: 340px; left: 915px; }
+#meteo-direction { top: 75px;  left: 1120px; font-size: 26px; color: var(--cyan) !important; }
+#meteo-piste     { top: 290px; left: 1120px; }
+#meteo-pluie     { top: 395px; left: 1120px; }
+
+/* =========================================================
+   4. JAUGES ET BOUSSOLE
+   ========================================================= */
+.jauge-container {
+    position: absolute;
+    width: 130px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.jauge-barre {
+    width: 100%;
+    height: 100%;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-out;
+}
+
+/* Positions des conteneurs de jauges */
+#jauge-air-container   { top: 145px; left: 870px; }
+#jauge-hum-container   { top: 250px; left: 870px; }
+#jauge-vent-container  { top: 375px; left: 870px; }
+#jauge-track-container { top: 340px; left: 1080px; }
+#jauge-eau-container   { top: 430px; left: 1080px; }
+
+/* Couleurs des barres */
+#jauge-barre-air      { background: linear-gradient(90deg, #a55eea, #00d4ff); }
+#jauge-barre-humidite { background: linear-gradient(90deg, #00d4ff, #0088ff); }
+#jauge-barre-vent     { background: linear-gradient(90deg, #00d4ff, #85e8ff); }
+#jauge-barre-piste    { background: linear-gradient(90deg, #2ed573, #7bed9f); }
+#jauge-barre-pluie    { background: linear-gradient(90deg, #00d4ff, #3742fa); }
+
+
+
+/* Boussole aiguille grande taille */
+#boussole-aiguille {
+    position: absolute;
+    top: 145px;
+    left: 1111px;
+    width: 70px;
+    height: 70px;
+    transform-origin: 50% 50%; /* S'assure que le point d'ancrage est exactement au centre */
+    transform: rotate(0deg);
+    transition: transform 0.4s ease-out;
+}
+
+#boussole-aiguille .fleche-boussole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Positionne le bas de la pointe exactement au centre du point de rotation */
+    transform: translate(-50%, -100%); 
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 32px solid var(--cyan);
+    filter: drop-shadow(0 0 8px var(--cyan));
+}
+
+
+/* =========================================================
+   DÉPLACEMENT DE LA FENÊTRE ELECTRON
+   ========================================================= */
+
+#hud-container {
+    -webkit-app-region: drag;
+}
+
+/* Les éléments qui doivent rester cliquables */
+button,
+input,
+select,
+textarea,
+a {
+    -webkit-app-region: no-drag;
+}

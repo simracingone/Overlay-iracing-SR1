@@ -1,0 +1,1345 @@
+/* =========================================================
+   iRACING HUD 2
+   CSS COMPLET
+   - VOITURE : structure nouvelle conservée
+   - DRAPEAUX / PISTE / METEO : système ancienne version
+   ========================================================= */
+
+:root {
+    --font-orbitron: 'Orbitron', sans-serif;
+    --font-exo: 'Exo 2', sans-serif;
+    --font-rajdhani: 'Rajdhani', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+
+    --cyan: #00d4ff;
+    --cyan-soft: #85e8ff;
+    --green: #2ed573;
+    --red: #ff3040;
+    --orange: #ffa502;
+    --violet: #a55eea;
+    --white: #eaf5ff;
+    --grey: #8da2b5;
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud-container {
+    position: relative;
+    width: 1086px;
+    height: 1448px;
+    overflow: hidden;
+    background: transparent;
+    -webkit-app-region: drag;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.hud-background {
+    position: absolute;
+    inset: 0;
+    width: 1086px;
+    height: 1448px;
+    background-image: url('../assets/hud2.png');
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 1086px 1448px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* =========================================================
+   CAR LAYER
+   ========================================================= */
+
+.car-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1024px;
+    height: 683px;
+    transform: scale(1.060546875, 1.135);
+    transform-origin: top left;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* =========================================================
+   FREINS
+   ========================================================= */
+
+.brakes-zone {
+    position: absolute;
+    top: 105px;
+    left: 88px;
+    width: 210px;
+    height: 205px;
+    pointer-events: none;
+}
+
+.brake-item {
+    position: absolute;
+    width: 92px;
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brake-item.fl {
+    top: 0;
+    left: 0;
+}
+
+.brake-item.fr {
+    top: 0;
+    right: 0;
+}
+
+.brake-item.rl {
+    bottom: 0;
+    left: 0;
+}
+
+.brake-item.rr {
+    bottom: 0;
+    right: 0;
+}
+
+/* =========================================================
+   ARC FREIN
+   ========================================================= */
+
+.arc-svg {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    overflow: visible;
+    transform: rotate(-90deg);
+    pointer-events: none;
+}
+
+.brake-item.fl .arc-svg,
+.brake-item.fr .arc-svg {
+    top: 12px;
+}
+
+.brake-item.fl .arc-svg,
+.brake-item.rl .arc-svg {
+    left: -22px;
+}
+
+.brake-item.fr .arc-svg,
+.brake-item.rr .arc-svg {
+    left: 2px;
+}
+
+.brake-item.rl .arc-svg,
+.brake-item.rr .arc-svg {
+    top: 52px;
+}
+
+.arc-bg {
+    fill: none;
+    stroke: rgba(255,255,255,.055);
+    stroke-width: 12;
+}
+
+.arc-fill {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 12;
+    stroke-linecap: butt;
+    transition: stroke-dasharray .1s linear, stroke .15s linear;
+    filter: drop-shadow(0 0 3px rgba(46,213,115,.55));
+}
+
+/* =========================================================
+   TEMP FREINS
+   ========================================================= */
+
+.brake-temp {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyan);
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    text-shadow: 0 0 5px rgba(0,212,255,.55);
+}
+
+.brake-item.fl .brake-temp,
+.brake-item.fr .brake-temp {
+    top: 110px;
+    left: 5px;
+}
+
+.brake-item.rl .brake-temp,
+.brake-item.rr .brake-temp {
+    top: 150px;
+    left: 5px;
+}
+
+/* =========================================================
+   PNEUS
+   ========================================================= */
+
+.car-tire-box {
+    position: absolute;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    pointer-events: none;
+}
+
+.fl-car {
+    top: 160px;
+    left: 370px;
+}
+
+.fr-car {
+    top: 160px;
+    right: 370px;
+}
+
+.rl-car {
+    top: 420px;
+    left: 370px;
+}
+
+.rr-car {
+    top: 420px;
+    right: 370px;
+}
+
+/* =========================================================
+   GRAPHIC PNEU
+   ========================================================= */
+
+.tire-graphic {
+    width: 40px;
+    height: 68px;
+    flex: 0 0 40px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 4px;
+    background: transparent;
+}
+
+.strip {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border-right: 1px solid rgba(0,0,0,.25);
+    transition: background-color .15s linear, box-shadow .15s linear;
+}
+
+.strip:last-child {
+    border-right: none;
+}
+
+/* =========================================================
+   DONNEES PNEUS
+   ========================================================= */
+
+.tire-data {
+    position: absolute;
+    width: 120px;
+    height: 90px;
+}
+
+.fl-car .tire-data {
+    top: 90px;
+    left: -15px;
+    text-align: right;
+}
+
+.fr-car .tire-data {
+    top: 90px;
+    left: 20px;
+    text-align: left;
+}
+
+.rl-car .tire-data {
+    top: 85px;
+    left: -15px;
+    text-align: right;
+}
+
+.rr-car .tire-data {
+    top: 85px;
+    left: 20px;
+    text-align: left;
+}
+
+.tire-temp {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan-soft);
+    white-space: nowrap;
+}
+
+.tire-psi {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--white);
+    white-space: nowrap;
+}
+
+/* =========================================================
+   USURE PNEUS
+   ========================================================= */
+
+.wear-bar-track {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: rgba(255,255,255,.10);
+}
+
+.wear-bar-fill {
+    width: 100%;
+    height: 100%;
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(46,213,115,.55);
+    transition: width .15s linear;
+}
+
+.wear-pct {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+/* =========================================================
+   CONDITIONS
+   ========================================================= */
+
+.conditions-zone {
+    position: absolute;
+    top: 455px;
+    left: 120px;
+    width: 210px;
+    height: 195px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.cond-row {
+    position: relative;
+    width: 100%;
+    height: 42px;
+}
+
+.cond-value {
+    position: absolute;
+    left: 20px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.fuel .cond-value {
+    top: 10px;
+    color: var(--green);
+}
+
+.water .cond-value {
+    top: 15px;
+    color: var(--cyan-soft);
+}
+
+.battery .cond-value {
+    top: 30px;
+    color: var(--green);
+}
+
+.oil .cond-value {
+    top: 42px;
+    color: var(--orange);
+}
+
+/* =========================================================
+   BARRES CONDITIONS
+   ========================================================= */
+
+.bar-track {
+    position: absolute;
+    left: 90px;
+    width: 80px;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(255,255,255,.08);
+}
+
+.fuel .bar-track {
+    top: 17px;
+}
+
+.water .bar-track {
+    top: 22px;
+}
+
+.battery .bar-track {
+    top: 32px;
+}
+
+.oil .bar-track {
+    top: 42px;
+}
+
+.bar-fill {
+    width: 0%;
+    height: 100%;
+    transition: width .2s linear;
+}
+
+.bar-fill.green {
+    background: var(--green);
+}
+
+.bar-fill.blue {
+    background: var(--cyan-soft);
+}
+
+.bar-fill.orange {
+    background: var(--orange);
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.inputs-zone {
+    position: absolute;
+    top: 130px;
+    left: 710px;
+    width: 220px;
+    height: 220px;
+    pointer-events: none;
+}
+
+.input-col {
+    position: absolute;
+    top: 0;
+    width: 60px;
+    height: 100%;
+}
+
+.input-col.clutch {
+    left: -20px;
+}
+
+.input-col.throttle {
+    left: 70px;
+}
+
+.input-col.brake {
+    left: 170px;
+}
+
+/* =========================================================
+   BARRES VERTICALES
+   ========================================================= */
+
+.v-track {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    width: 18px;
+    height: 105px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    border: 1px solid rgba(120,170,210,.22);
+    border-radius: 3px;
+    background: rgba(255,255,255,.035);
+}
+
+.v-fill {
+    width: 100%;
+    height: 0%;
+    transition: height .05s linear;
+}
+
+.v-fill.blue {
+    background: var(--cyan-soft);
+}
+
+.v-fill.green {
+    background: var(--green);
+}
+
+.v-fill.red {
+    background: var(--red);
+}
+
+.pct {
+    position: absolute;
+    top: 150px;
+    left: 25px;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.clutch .pct {
+    color: var(--cyan-soft);
+}
+
+.throttle .pct {
+    color: var(--green);
+}
+
+.brake .pct {
+    color: var(--red);
+}
+
+/* =========================================================
+   PERFORMANCES
+   ========================================================= */
+
+.perf-zone {
+    position: absolute;
+    top: 380px;
+    right: 88px;
+    width: 210px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.perf-block {
+    position: relative;
+    width: 100%;
+    height: 50px;
+}
+
+.speed-val {
+    position: absolute;
+    top: 25px;
+    left: 60px;
+    font-family: var(--font-orbitron);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--cyan-soft);
+}
+
+.rpm-val {
+    position: absolute;
+    top: 25px;
+    left: 60px;
+    font-family: var(--font-orbitron);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--orange);
+}
+
+.rpm-leds-bar {
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    width: 140px;
+    height: 5px;
+    overflow: hidden;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,.11) 0px,
+        rgba(255,255,255,.11) 5px,
+        transparent 5px,
+        transparent 8px
+    );
+}
+
+.rpm-leds-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #2ed573 0%,
+        #2ed573 60%,
+        #ffa502 84%,
+        #ff4757 100%
+    );
+    transition: width .05s linear;
+}
+
+.gear-val {
+    position: absolute;
+    top: 35px;
+    left: 60px;
+    font-family: var(--font-orbitron);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--green);
+}
+
+.delta-val {
+    position: absolute;
+    top: 35px;
+    left: 60px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+.trend-icon {
+    position: absolute;
+    top: 35px;
+    right: 10px;
+    font-family: var(--font-exo);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+/* =========================================================
+   DEGATS
+   ========================================================= */
+
+.damage-alert {
+    display: none;
+    position: absolute;
+    z-index: 20;
+}
+
+/* =========================================================
+   WEATHER LAYER
+   ANCIEN SYSTEME
+   ========================================================= */
+
+.weather-layer {
+    position: absolute;
+    top: 800px;
+    left: 0;
+    width: 1250px;
+    height: 493px;
+    transform: scale(.8688, 1.045);
+    transform-origin: top left;
+    z-index: 30;
+    pointer-events: none;
+}
+
+/* =========================================================
+   TITRES DES PANNEAUX
+   ========================================================= */
+
+.panel-header {
+    position: absolute;
+    top: 18px;
+    font-family: var(--font-orbitron);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-shadow: 0 0 8px rgba(0,212,255,.6);
+    pointer-events: none;
+}
+
+.header-drapeaux {
+    left: 210px;
+    transform: translateX(-50%);
+}
+
+.header-piste {
+    left: 600px;
+}
+
+.header-meteo {
+    left: 1050px;
+    transform: translateX(-50%);
+}
+
+/* =========================================================
+   DRAPEAUX
+   ========================================================= */
+
+#section-drapeaux {
+    position: absolute;
+    top:30px;
+    left: 20px;
+    width: 450px;
+    height: 493px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.case-drapeau {
+    position: absolute;
+    width: 126px;  /* Ajusté pour rentrer parfaitement dans la case du fond */
+    height: 80px;  /* Ajusté pour la hauteur de la case */
+    overflow: hidden;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   POSITIONS AJUSTÉES (TOP / LEFT)
+   ========================================================= */
+
+/* --- LIGNE 1 --- */
+#drapeau-vert {
+    left: 35px;
+    top: 35px;
+}
+
+#drapeau-jaune {
+    left: 180px;
+    top: 35px;
+}
+
+#drapeau-rouge {
+    left: 330px;
+    top: 35px;
+}
+
+/* --- LIGNE 2 --- */
+#drapeau-bleu {
+    left: 35px;
+    top: 140px;
+}
+
+#drapeau-blanc {
+    left: 180px;
+    top: 140px;
+}
+
+#drapeau-debris {
+    left: 330px;
+    top: 140px;
+}
+
+/* --- LIGNE 3 --- */
+#drapeau-damier {
+    left: 35px;
+    top: 250px;
+}
+
+#drapeau-pneus {
+    left: 180px;
+    top: 250px;
+}
+
+#drapeau-meatball {
+    left: 330px;
+    top: 250px;
+}
+
+/* --- LIGNE 4 --- */
+#drapeau-stop-go {
+    left: 35px;
+    top: 350px;
+}
+
+#drapeau-pit {
+    left: 185px;
+    top: 350px;
+}
+
+#drapeau-avertissement {
+    left: 330px;
+    top: 350px;
+}
+
+/* =========================================================
+   VOILE DRAPEAU
+   ========================================================= */
+
+.voile-sombre {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.72);
+    opacity: 1;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity .15s ease;
+}
+
+
+
+.case-drapeau.actif .voile-sombre {
+    opacity: 0;
+}
+
+
+
+/* Même en actif, on garde temporairement la bordure */
+.case-drapeau.actif {
+    border-color: #ff8c00;
+}
+
+
+/* =========================================================
+   TITRE DRAPEAU (BLANC PUR SANS FLOU)
+   ========================================================= */
+
+.titre-drapeau {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    bottom: 12px;
+    z-index: 3;
+    opacity: 0;
+    visibility: hidden;
+    text-align: center;
+    font-family: var(--font-orbitron);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.05;
+    color: #ffffff !important; /* Blanc pur */
+    text-shadow: none !important; /* Retire le flou */
+    transition: opacity .15s ease, visibility .15s ease;
+}
+
+.case-drapeau.actif .titre-drapeau {
+    opacity: 1;
+    visibility: visible;
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+
+
+/* =========================================================
+   STATUT DRAPEAU
+   ========================================================= */
+
+.statut-drapeau {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    opacity: 0;
+    visibility: hidden;
+    font-family: var(--font-exo);
+    font-size: 7px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: .5px;
+    text-shadow: 0 0 5px rgba(46,213,115,.7);
+    transition: opacity .15s ease, visibility .15s ease;
+}
+
+
+
+
+.case-drapeau.actif .statut-drapeau {
+    opacity: 1;
+    visibility: visible;
+}
+
+.point-statut {
+    display: block;
+    width: 5px;
+    height: 5px;
+    flex: 0 0 5px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(46,213,115,.9);
+}
+
+
+
+
+
+/* =========================================================
+   COULEURS DRAPEAUX
+   ========================================================= */
+
+#drapeau-vert.actif .titre-drapeau {
+    color: var(--green);
+    text-shadow: 0 0 7px rgba(46,213,115,.8);
+}
+
+#drapeau-jaune.actif .titre-drapeau {
+    color: var(--orange);
+    text-shadow: 0 0 7px rgba(255,165,2,.8);
+}
+
+#drapeau-rouge.actif .titre-drapeau {
+    color: var(--red);
+    text-shadow: 0 0 7px rgba(255,48,64,.8);
+}
+
+#drapeau-bleu.actif .titre-drapeau {
+    color: var(--cyan);
+    text-shadow: 0 0 7px rgba(0,212,255,.8);
+}
+
+#drapeau-blanc.actif .titre-drapeau {
+    color: var(--white);
+    text-shadow: 0 0 7px rgba(234,245,255,.8);
+}
+
+#drapeau-debris.actif .titre-drapeau {
+    color: var(--orange);
+    text-shadow: 0 0 7px rgba(255,165,2,.8);
+}
+
+#drapeau-damier.actif .titre-drapeau {
+    color: var(--white);
+    text-shadow: 0 0 7px rgba(234,245,255,.8);
+}
+
+#drapeau-pneus.actif .titre-drapeau {
+    color: var(--orange);
+    text-shadow: 0 0 7px rgba(255,165,2,.8);
+}
+
+#drapeau-meatball.actif .titre-drapeau {
+    color: var(--orange);
+    text-shadow: 0 0 7px rgba(255,165,2,.8);
+}
+
+#drapeau-stop-go.actif .titre-drapeau {
+    color: #ff3cff;
+    text-shadow: 0 0 7px rgba(255,60,255,.8);
+}
+
+#drapeau-pit.actif .titre-drapeau {
+    color: var(--violet);
+    text-shadow: 0 0 7px rgba(165,94,234,.8);
+}
+
+#drapeau-avertissement.actif .titre-drapeau {
+    color: var(--orange);
+    text-shadow: 0 0 7px rgba(255,165,2,.8);
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   PISTE
+   ANCIEN SYSTEME
+   ========================================================= */
+
+#section-piste {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 900px;
+    height: 493px;
+    z-index: 101;
+    pointer-events: none;
+}
+
+.ligne-piste {
+    position: absolute;
+    left: 555px;
+    width: 340px;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+.label-piste {
+    width: 110px;
+    flex: 0 0 110px;
+    font-family: var(--font-exo);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cyan);
+}
+
+.valeur-piste {
+    width: 180px;
+    flex-grow: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.unite-sub {
+    font-size: 9px;
+    color: var(--grey);
+}
+
+#ligne-last {
+    top: 73px;
+}
+
+#ligne-best {
+    top: 125px;
+}
+
+#ligne-lap {
+    top: 177px;
+}
+
+#ligne-time {
+    top: 235px;
+}
+
+#ligne-cons {
+    top: 285px;
+}
+
+#ligne-tours {
+    top: 335px;
+}
+
+#ligne-inc {
+    top: 390px;
+}
+
+#ligne-joker {
+    top: 440px;
+}
+
+#ligne-best .valeur-piste {
+    color: var(--red);
+}
+
+#ligne-tours .label-piste {
+    color: var(--orange);
+}
+
+#ligne-tours .valeur-piste {
+    color: var(--white);
+}
+
+#ligne-inc .label-piste,
+#ligne-inc .valeur-piste {
+    color: var(--green);
+}
+
+#ligne-joker .label-piste,
+#ligne-joker .valeur-piste {
+    color: var(--violet);
+}
+
+
+
+
+/* =========================================================
+   METEO
+   ANCIEN SYSTEME
+   ========================================================= */
+
+#section-meteo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1250px;
+    height: 493px;
+    z-index: 102;
+    pointer-events: none;
+}
+
+.bloc-meteo-titre {
+    position: absolute;
+    font-family: var(--font-exo);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cyan);
+    pointer-events: none;
+}
+
+#titre-air {
+    top: 90px;
+    left: 915px;
+}
+
+#titre-hum {
+    top: 195px;
+    left: 915px;
+}
+
+#titre-vent {
+    top: 320px;
+    left: 915px;
+}
+
+#titre-dir {
+    top: 60px;
+    left: 1120px;
+}
+
+#titre-track {
+    top: 265px;
+    left: 1120px;
+    color: var(--white);
+}
+
+#titre-eau {
+    top: 370px;
+    left: 1120px;
+}
+
+.valeur-meteo {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    pointer-events: none;
+}
+
+.weather-value {
+    display: inline-block;
+}
+
+.valeur-meteo .unite {
+    font-size: 13px;
+    color: var(--cyan-soft);
+    margin-left: 4px;
+}
+
+/* =========================================================
+   POSITIONS METEO
+   ========================================================= */
+
+#meteo-air {
+    top: 120px;
+    left: 900px;
+}
+
+#meteo-humidite {
+    top: 250px;
+    left: 900px;
+}
+
+#meteo-vent {
+    top: 390px;
+    left: 900px;
+}
+
+#meteo-direction {
+    top: 90px;
+    left: 1115px;
+    font-size: 26px;
+    color: var(--cyan);
+}
+
+#meteo-piste {
+    top: 310px;
+    left: 1100px;
+}
+
+#meteo-pluie {
+    top: 430px;
+    left: 1105px;
+}
+
+/* =========================================================
+   JAUGES METEO
+   ========================================================= */
+
+.jauge-container {
+    position: absolute;
+    width: 130px;
+    height: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 4px;
+    background: rgba(255,255,255,.15);
+    pointer-events: none;
+}
+
+.jauge-barre {
+    width: 100%;
+    height: 100%;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform .3s ease-out;
+}
+
+#jauge-air-container {
+    top: 155px;
+    left: 870px;
+}
+
+#jauge-hum-container {
+    top: 285px;
+    left: 870px;
+}
+
+#jauge-vent-container {
+    top: 430px;
+    left: 870px;
+}
+
+#jauge-track-container {
+    top: 345px;
+    left: 1060px;
+}
+
+#jauge-eau-container {
+    top: 460px;
+    left: 1060px;
+}
+
+#jauge-barre-air {
+    background: linear-gradient(90deg, #a55eea, #00d4ff);
+}
+
+#jauge-barre-humidite {
+    background: linear-gradient(90deg, #00d4ff, #0088ff);
+}
+
+#jauge-barre-vent {
+    background: linear-gradient(90deg, #00d4ff, #85e8ff);
+}
+
+#jauge-barre-piste {
+    background: linear-gradient(90deg, #2ed573, #7bed9f);
+}
+
+#jauge-barre-pluie {
+    background: linear-gradient(90deg, #00d4ff, #3742fa);
+}
+
+/* =========================================================
+   AIGUILLE BOUSSOLE SEULE
+   ========================================================= */
+
+/* =========================================================
+   AIGUILLE BOUSSOLE (LÉGÈREMENT PLUS GRANDE)
+   ========================================================= */
+
+#boussole-aiguille {
+    position: absolute;
+    top: 145px;
+    left: 1098px;
+    width: 70px;
+    height: 70px;
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+    transition: transform .4s ease-out;
+    pointer-events: none;
+}
+
+/* Point blanc au centre */
+#boussole-aiguille::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    background: #ffffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 6px #ffffff;
+    z-index: 3;
+}
+
+/* Pointe Nord (Cyan lumineuse) */
+.fleche-boussole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 30px solid var(--cyan, #00d2ff);
+    filter: drop-shadow(0 0 8px var(--cyan, #00d2ff));
+}
+
+/* Pointe Sud (Gris sombre) */
+.fleche-boussole::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: -7px;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 30px solid rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================================
+   ELECTRON
+   ========================================================= */
+
+.hud-container,
+.car-layer,
+.weather-layer {
+    -webkit-app-region: drag;
+}
+
+button,
+input,
+select,
+textarea,
+a {
+    -webkit-app-region: no-drag;
+}
