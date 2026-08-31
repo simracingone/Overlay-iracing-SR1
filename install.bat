@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-title SimracingOne - Installateur (Version Finale)
+title SimracingOne - Installateur Overlay SR1 v4
 color 0B
 
 REM =====================================================
@@ -12,7 +12,7 @@ cd /d "%~dp0"
 set "PROJECT_DIR=%CD%"
 
 echo =====================================================
-echo    INSTALLATION SIMRACING ONE VERSION 4
+echo    INSTALLATION OVERLAY SR1 v4
 echo =====================================================
 echo.
 
@@ -209,13 +209,94 @@ netsh advfirewall firewall add rule ^
 echo    [OK] Ports ouverts.
 
 REM =====================================================
+REM 9. GENERATION DU FICHIER DE LANCEMENT (start.bat)
+REM =====================================================
+
+echo [+] Generation du fichier lanceur start.bat...
+
+(
+echo @echo off
+echo :: Desactive le mode Edition Rapide pour eviter le gel du terminal au clic
+echo reg add "HKCU\Console" /v QuickEdit /t REG_DWORD /d 0 /f ^>nul 2^>^&1
+echo.
+echo title Overlay SR1 v4 - Electron
+echo cd /d "%%~dp0"
+echo.
+echo :: Configuration de la couleur ^(Fond noir, texte cyan^)
+echo color 0B
+echo.
+echo cls
+echo ======================================================================
+echo    OVERLAY SR1 v4 - LANCEMENT DE L'OVERLAY ELECTRON
+echo ======================================================================
+echo  Concepteur : Philippe Mourier [SR1]
+echo  Twitch     : twitch.tv/simracing_one
+echo  YouTube    : youtube.com/@simracing_one
+echo ----------------------------------------------------------------------
+echo.
+echo :: Definition du chemin vers le Python local
+echo set "PYTHON_EXE=%%~dp0.venv\Scripts\python.exe"
+echo.
+echo :: Verification si le venv existe
+echo if not exist "%%PYTHON_EXE%%" ^(
+echo     echo [ERREUR] Environnement virtuel introuvable. 
+echo     echo Veuillez lancer install.bat d'abord.
+echo     echo.
+echo     pause
+echo     exit /b 1
+echo ^)
+echo.
+echo :: Nettoyage des anciens processus Python et Electron
+echo echo [+] Nettoyage des anciens processus...
+echo taskkill /F /IM python.exe ^>nul 2^>^&1
+echo taskkill /F /IM pythonw.exe ^>nul 2^>^&1
+echo taskkill /F /IM electron.exe ^>nul 2^>^&1
+echo.
+echo :: Vidage du cache Electron dans AppData
+echo echo [+] Nettoyage du cache Electron...
+echo set "ELECTRON_CACHE_DIR=%%APPDATA%%\Overlays-SimracingOne"
+echo.
+echo if exist "%%ELECTRON_CACHE_DIR%%" ^(
+echo     rmdir /s /q "%%ELECTRON_CACHE_DIR%%\Cache" ^>nul 2^>^&1
+echo     rmdir /s /q "%%ELECTRON_CACHE_DIR%%\Code Cache" ^>nul 2^>^&1
+echo     rmdir /s /q "%%ELECTRON_CACHE_DIR%%\GPUCache" ^>nul 2^>^&1
+echo ^)
+echo.
+echo :: Lancement serveur vocal Flask ^(via le venv^)
+echo echo [+] Lancement du serveur vocal ^(Flask + pygame^)...
+echo start "Serveur Vocal" /B "%%PYTHON_EXE%%" voice.py
+echo.
+echo :: Lancement API FastAPI ^(via le venv^)
+echo echo [+] Lancement de l'API FastAPI ^(port 8000^)...
+echo start "API FastAPI" /B "%%PYTHON_EXE%%" -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload --log-level error
+echo.
+echo :: Attente 5 secondes pour initialisation
+echo echo [+] Initialisation en cours ^(5s^)...
+echo timeout /t 5 /nobreak ^>nul
+echo.
+echo :: Lancement Electron
+echo echo [+] Lancement de l'interface Electron...
+echo call npx electron .
+echo.
+echo ======================================================================
+echo    OVERLAY SR1 v4 DEMARRE - NE FERMEZ PAS CETTE FENETRE
+echo ======================================================================
+echo.
+echo pause
+) > "%PROJECT_DIR%\start.bat"
+
+echo    [OK] Fichier start.bat genere avec succes.
+
+REM =====================================================
 REM FIN
 REM =====================================================
 
 echo.
 echo =====================================================
-echo    INSTALLATION v4.0 TERMINEE AVEC SUCCES
+echo    INSTALLATION OVERLAY SR1 v4 TERMINEE AVEC SUCCES
 echo =====================================================
+echo.
+echo Vous pouvez maintenant executer "start.bat" en mode standard (non-administrateur).
 echo.
 
 pause
