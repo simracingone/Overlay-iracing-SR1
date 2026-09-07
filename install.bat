@@ -86,9 +86,11 @@ if not exist ".venv" "%SYS_PYTHON%" -m venv .venv
 set "PYTHON_EXE=%PROJECT_DIR%\.venv\Scripts\python.exe"
 
 REM 5. Installation des dependances Python
+echo [+] Mise a jour des outils d'installation Python...
+"%PYTHON_EXE%" -m pip install --upgrade pip setuptools wheel
+
 echo [+] Installation des dependances Python dans le venv...
-"%PYTHON_EXE%" -m pip install --upgrade pip
-"%PYTHON_EXE%" -m pip install fastapi "uvicorn[standard]" websockets wsproto edge-tts pygame flask flask-cors pyirsdk
+"%PYTHON_EXE%" -m pip install --prefer-binary fastapi "uvicorn[standard]" websockets wsproto edge-tts pygame-ce flask flask-cors pyirsdk
 
 if %errorlevel% neq 0 (
     echo [ERREUR] Installation des modules Python echouee.
@@ -97,7 +99,7 @@ if %errorlevel% neq 0 (
 )
 
 echo [+] Verification des modules Python...
-"%PYTHON_EXE%" -c "import irsdk, fastapi, uvicorn, websockets, flask"
+"%PYTHON_EXE%" -c "import irsdk, fastapi, uvicorn, websockets, flask, pygame"
 if %errorlevel% neq 0 (
     echo [ERREUR] La verification des modules Python a echoue.
     pause
