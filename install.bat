@@ -112,46 +112,11 @@ echo [+] Configuration du pare-feu...
 netsh advfirewall firewall add rule name="SimracingOne" dir=in action=allow protocol=TCP localport=5000,8000,3000 profile=any >nul 2>&1
 echo    [OK] Ports ouverts.
 
-REM 7. Compilation du lanceur EXE
-echo [+] Generation de l'executable lanceur...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$code = 'using System; using System.Diagnostics; class Program { static void Main() { ProcessStartInfo psi = new ProcessStartInfo(); psi.FileName = \"cmd.exe\"; psi.Arguments = \"/c start.bat\"; psi.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory; psi.UseShellExecute = true; Process.Start(psi); } }'; Add-Type -TypeDefinition $code -OutputAssembly 'Launch_Overlay.exe' -OutputType WindowsApplication"
-
-if not exist "Launch_Overlay.exe" (
-    echo [ERREUR] La creation de Launch_Overlay.exe a echoue.
-    pause
-    exit /b 1
-)
-echo    [OK] Launch_Overlay.exe genere.
-
-REM 8. Creation du raccourci sur le bureau
-echo [+] Creation du raccourci sur le bureau...
-set "ICON_PATH=%PROJECT_DIR%\app.ico"
-set "TARGET_EXE=%PROJECT_DIR%\Launch_Overlay.exe"
-set "SHORTCUT_NAME=Overlay SR1 v4.lnk"
-
-set "VBS_SCRIPT=%TEMP%\create_shortcut.vbs"
-
-echo Set WshShell = CreateObject("WScript.Shell") > "%VBS_SCRIPT%"
-echo DesktopPath = WshShell.SpecialFolders("Desktop") >> "%VBS_SCRIPT%"
-echo Set Shortcut = WshShell.CreateShortcut(DesktopPath ^& "\%SHORTCUT_NAME%") >> "%VBS_SCRIPT%"
-echo Shortcut.TargetPath = "%TARGET_EXE%" >> "%VBS_SCRIPT%"
-echo Shortcut.WorkingDirectory = "%PROJECT_DIR%" >> "%VBS_SCRIPT%"
-if exist "%ICON_PATH%" (
-    echo Shortcut.IconLocation = "%ICON_PATH%" >> "%VBS_SCRIPT%"
-)
-echo Shortcut.Save >> "%VBS_SCRIPT%"
-
-cscript //nologo "%VBS_SCRIPT%"
-del "%VBS_SCRIPT%" >nul 2>&1
-
-echo    [OK] Raccourci pointe vers l'EXE cree sur le bureau.
-
 echo.
 echo =====================================================
 echo    INSTALLATION OVERLAY SR1 v4 TERMINEE AVEC SUCCES
 echo =====================================================
 echo.
-echo L'environnement est pret et le lanceur a ete configure.
-echo Un raccourci a ete cree sur votre bureau.
+echo L'environnement est pret. Lancez directement le fichier "start.bat" pour demarrer.
 echo.
 pause
