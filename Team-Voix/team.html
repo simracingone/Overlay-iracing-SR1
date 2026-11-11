@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' ws://127.0.0.1:8000 http://127.0.0.1:*; media-src 'self' blob:">
+  <title>SimracingOne — Team Voice</title>
+  <link rel="stylesheet" href="css/team.css">
+  <script src="js/team-voice.js" defer></script>
+</head>
+<body>
+  <main id="team-panel" aria-live="polite">
+    <header id="drag-handle">
+      <span class="headset">◉</span>
+      <span class="title">RADIO TEAM</span>
+      <span id="connection" class="connection">CONNEXION…</span>
+    </header>
+    <section class="expert-card">
+      <div class="portrait-frame"><img id="expert-image" src="assets/team/Antoine.png" alt="Expert Team"></div>
+      <div class="expert-info">
+        <div id="expert-name" class="expert-name">ÉQUIPE SIMRACINGONE</div>
+        <div id="expert-department" class="department">RADIO EN ATTENTE</div>
+        <div id="expert-role" class="role">Les annonces apparaîtront ici pendant la course.</div>
+      </div>
+    </section>
+    <section class="message-card">
+      <div class="live-label"><span class="live-dot"></span> TRANSMISSION TEAM</div>
+      <div id="team-message">En attente des données iRacing…</div>
+    </section>
+    <footer id="edit-hint">Ctrl + Alt + M : déplacer · Ctrl + Alt + T : tester le son</footer>
+  </main>
+</body>
+</html>

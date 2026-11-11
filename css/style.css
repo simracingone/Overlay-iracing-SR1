@@ -134,7 +134,6 @@ body.edit-mode-active #hud-mode-indicator { color: #00ff88; border-color: #00ff8
 /* ==========================================================
    MODIFICATEURS DDES HUDS HAUTEUR LARGEUR
    ========================================================== */
-#module-radio-team {  width: 400px; height: 450px;  } /* OK */
 #module-leaderboard {   width: 850px;   } /* OK */
 #module-relative {   width: 750px;   } /* OK */
 #module-flags {  width: 400px; height: 450px;  } /* OK */
@@ -1520,83 +1519,6 @@ body.edit-mode-active #hud-mode-indicator { color: #00ff88; border-color: #00ff8
 
 
 
-
-/* --- CONFIGURATION DU MODULE RADIO --- */
-
-#module-radio-team {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-#module-radio-team.active {
-    display: block !important;
-    opacity: 1 !important;
-}
-
-/* PHOTO : Priorité visuelle 120x150 */
-.radio-photo-conteneur {
-    width: 120px !important;
-    height: 150px !important;
-    border: 2px solid var(--neon); /* Utilise ton vert néon */
-    border-radius: 4px;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: #000;
-}
-
-.radio-photo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* ALIGNEMENT TEXTES EXPERT */
-.infos-expert-container {
-    padding-left: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
-}
-
-.ligne-info-mini {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 10px;
-}
-
-/* STATUS LIVE COMPACT */
-.status-live-mini {
-    display: flex;
-    align-items: center;
-    font-size: 9px;
-    color: #00ff00;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-.dot-blink {
-    width: 6px;
-    height: 6px;
-    background-color: #ff0000;
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
-animation: radio-clignote 1s infinite;
-}
-
-@keyframes radio-clignote {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
-}
-
-.msg-compact {
-    min-height: 35px;
-    line-height: 1.2;
-    font-style: italic;
-    margin-top: 4px;
-}
 
 /* BORDURE D'ÉDITION (Visible uniquement en mode CTRL+ALT+M) */
 .edit-mode-active .editable-mod {

@@ -1,51 +1,31 @@
-# 🏎️ SimracingOne Overlays - V3
+# SimracingOne Overlay — v6.0.1
 
-A suite of high-performance overlays for iRacing, developed with Electron and Python. This V3 brings increased fluidity and simplified customization for sim racers.
+Projet principal de l'overlay iRacing pour Windows. Il conserve les HUD et le serveur de télémétrie, sans la Radio Team ni les annonces vocales.
 
-## 📱 Follow me / Contact
+## Installation et lancement
 
-[![YouTube](https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@Simracingone)
-[![Twitch](https://img.shields.io/badge/Twitch-purple?style=for-the-badge&logo=twitch&logoColor=white)](https://www.twitch.tv/simracing_one)
+1. Lancez une seule fois `install.bat` en utilisateur normal. Il prépare les dépendances des deux projets. Node.js est installé dans le profil Windows si nécessaire ; si Python manque, Python 3.12 est installé pour le compte courant via WinGet.
+2. Lancez `start.bat` pour ouvrir les HUD et le serveur de télémétrie. Lancez `Team-Voix\start.bat` séparément pour les voix.
 
-Find all the latest project news and tutorials on my channels!
+## Projet Radio Team séparé
 
-## 🚀 Key Features
-* **Low Latency**: Optimized for real-time refresh without impacting FPS.
+Le compagnon `Team-Voix` contient la fenêtre Team, les annonces vocales, leurs images et effets radio. L'installation principale prépare aussi ce compagnon. Vous pouvez démarrer ou fermer Team-Voix séparément ; les HUD iRacing continuent de tourner.
 
-* **Multi-Platform Ready**: Works via Electron or directly in a browser.
+Le compagnon lit le flux local du projet principal sur `127.0.0.1:8000` et choisit un port local libre pour son service vocal si le port habituel `5000` est occupé. La génération TTS nécessite Internet et transmet le texte des annonces à Edge TTS de Microsoft. Voir `Team-Voix\README.md` et `Team-Voix\notice securite.txt`.
 
-* **Free to Use**: Developed by an enthusiast for enthusiasts.
+Si Python n'est pas déjà installé, WinGet doit être disponible pour que l'installateur l'ajoute automatiquement.
 
-## 📂 Code Structure
-* **main.js**: Entry point for the desktop application (Electron).
+## Raccourcis du projet principal
 
-* **main.py & data.py**: Telemetry data retrieval engine.
+- `Ctrl + Alt + F4` : HUD2
+- `Ctrl + Alt + F6` : météo, piste et drapeaux
+- `Ctrl + Alt + F7` : télémétrie voiture
+- `Ctrl + Alt + F8` : tableau de bord
+- `Ctrl + Alt + F9` : menu de visibilité
+- `Ctrl + Alt + F10` : réinitialisation des positions
+- `Ctrl + Alt + F11` : gestion des pilotes
+- `Ctrl + Alt + F12` : mode édition
 
-* **index.html**: Main display structure.
+## Licence
 
-## 🛠️ Installation & Launch
-1. **Clone the project**: `git clone https://github.com/simracingone/Overlays-SimracingOne.git`
-
-2. **Dependencies**: Run `install.bat` to automatically configure the environment.
-
-3. **Launching**:
-
-- Use `run Electron.bat` for the dedicated application.
-
-- Use `run browser.bat` for OBS/Web integration.
-
-## ⌨️ Keyboard Shortcuts
-* **Ctrl + Alt + F12**: Open/Close the editor (move & resize).
-
-* **Ctrl + Alt + F9**: Hide/Show HUD elements (in editor mode).
-
-* **Ctrl + Alt + F10**: Reset all positions.
-
-## ⚠️ License and Commercial Use
-This project is protected.
-
-* ✅ **Permitted**: Personal use, sharing, code modification for private use.
-
-* ❌ **Prohibited**: **Any commercial use is strictly prohibited.** You may not sell this software, include it in a paid package, or use it to generate revenue without the written consent of **SimracingOne**.
-
---- *Developed with ❤️ by **SimracingOne***
+L'usage commercial nécessite l'autorisation écrite de SimracingOne.

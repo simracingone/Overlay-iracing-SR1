@@ -14,7 +14,7 @@ from iracing.classement import classement
 # CONFIG
 # ============================================================
 
-VERSION = "5.2.0"
+VERSION = "6.0.1"
 DEBUG_SESSION = True
 SDK_RECONNECT_DELAY = 5.0
 

@@ -27,22 +27,10 @@ window.modifierVisibiliteCommandes = function (etat) {
         
         if (editEnabled) {
             el.style.outline = '2px dashed #00ff00';
-            if (el.id === 'module-radio-team') {
-                el.style.setProperty('display', 'block', 'important');
-                el.style.opacity = "1";
-                el.style.backgroundColor = "rgba(0, 162, 255, 0.3)";
-            } else {
-                el.style.setProperty('display', isVisibleInMenu ? 'block' : 'none', 'important');
-            }
+            el.style.setProperty('display', isVisibleInMenu ? 'block' : 'none', 'important');
         } else {
             el.style.outline = 'none';
-            if (el.id === 'module-radio-team') {
-                el.style.backgroundColor = "transparent";
-                el.style.setProperty('display', 'none', 'important');
-                el.style.opacity = "0";
-            } else {
-                el.style.setProperty('display', isVisibleInMenu ? 'block' : 'none', 'important');
-            }
+            el.style.setProperty('display', isVisibleInMenu ? 'block' : 'none', 'important');
         }
     };
 

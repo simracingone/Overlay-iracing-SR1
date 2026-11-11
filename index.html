@@ -10,13 +10,13 @@
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
     font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com;
     img-src 'self' data: http://127.0.0.1:8000;
-    connect-src 'self' ws://127.0.0.1:8000 http://127.0.0.1:5000;
-    media-src 'self' http://127.0.0.1:5000 blob:;
+    connect-src 'self' ws://127.0.0.1:8000;
+    media-src 'self' blob:;
   ">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Overlay SimracingOne v3.2.</title>
+    <title>Overlay SimracingOne v6.0.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Syncopate:wght@700&family=JetBrains+Mono:wght@400;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
       <link rel="stylesheet" href="css/style.css">
@@ -26,57 +26,6 @@
 
 </head>
 <body>
-
-
-
-
-<div class="panneau-hud editable-mod" id="module-radio-team">
-    <div class="resizer"></div>
-
-    <header class="en-tete-bleu padding-bas-8 marge-bas-10 affichage-flex alignement-centre">
-        <i class="fa-solid fa-headset c-vert icone-tuile-standard"></i>
-        <span class="police-titre taille-base majuscules ml-10">Radio Team</span>
-    </header>
-
-    <div class="affichage-flex flex-colonne gap-hud">
-        
-        <div class="tuile theme-bleu" style="padding: 5px !important;">
-            <div class="affichage-flex alignement-stretch remplir-espace">
-                
-                <div class="radio-photo-conteneur">
-                    <img id="radio-img" src="assets/team/Antoine.png" alt="Expert" class="radio-photo-img">
-                </div>
-                
-                <div class="infos-expert-container">
-                    <div id="radio-name" class="police-titre c-blanc" style="font-size: 1.2rem; line-height: 1;">NOM EXPERT</div>
-                    
-                    <div class="ligne-info-mini">
-                        <i class="fa-solid fa-microchip c-vert"></i>
-                        <span id="radio-dept" class="police-mono taille-micro c-vert majuscules">Département</span>
-                    </div>
-                    
-                    <div class="ligne-info-mini">
-                        <i class="fa-solid fa-user-gear c-bleu-200"></i>
-                        <span id="radio-role" class="role-italique police-mono taille-micro c-bleu-200">Rôle technique</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="tuile theme-gris" style="padding: 5px 10px !important;">
-            <div class="status-live-mini">
-                <span class="dot-blink"></span>
-                <span class="ml-5">LIVE TRANSMISSION</span>
-            </div>
-            <div id="radio-message" class="police-mono taille-petite c-blanc msg-compact">
-                En attente de signal...
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
 
 
 

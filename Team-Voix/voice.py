@@ -5,11 +5,30 @@ import pygame
 import threading
 import queue
 import time
-from flask import Flask, request, jsonify, send_from_directory
-from flask_cors import CORS
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-CORS(app)
+
+# L'interface Electron est servie depuis file:// et envoie Origin: null.
+# Refuser les origines Web inattendues réduit les requêtes cross-origin.
+ALLOWED_ORIGINS = {None, "null", "file://"}
+
+@app.before_request
+def restrict_origins():
+    origin = request.headers.get("Origin")
+    if origin not in ALLOWED_ORIGINS:
+        return jsonify({"status": "error", "reason": "origin not allowed"}), 403
+    if request.method == "OPTIONS":
+        return "", 204
+
+@app.after_request
+def allow_local_file_ui(response):
+    if request.headers.get("Origin") == "null":
+        response.headers["Access-Control-Allow-Origin"] = "null"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        response.headers["Vary"] = "Origin"
+    return response
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_AUDIO = os.path.join(BASE_DIR, "voice_temp.mp3")
@@ -36,6 +55,8 @@ VOICES = {
 
 # Queue audio
 voice_queue = queue.Queue()
+audio_ready = False
+audio_error = "Initialisation audio en cours"
 
 # --- ANTI-DOUBLON ---
 last_spoken = {}          # id -> timestamp
@@ -43,10 +64,16 @@ COOLDOWN_SECONDS = 3.0    # délai minimum entre deux mêmes alertes
 
 
 def voice_worker():
+    global audio_ready, audio_error
     try:
         pygame.mixer.pre_init(8000, -16, 1, 512)
         pygame.mixer.init()
+        audio_ready = True
+        audio_error = None
+        print(f"[AUDIO] Sortie audio prête : {pygame.mixer.get_init()}", flush=True)
     except Exception as e:
+        audio_ready = False
+        audio_error = f"Initialisation audio : {type(e).__name__}: {e}"
         print(f"[AUDIO] Erreur init mixer : {e}")
         return
 
@@ -96,7 +123,10 @@ def voice_worker():
                 pygame.mixer.Channel(1).stop()
 
         except Exception as e:
+            audio_error = f"{type(e).__name__}: {e}"
             print(f"[AUDIO] Erreur worker : {e}")
+        else:
+            audio_error = None
 
         finally:
             voice_queue.task_done()
@@ -108,13 +138,28 @@ threading.Thread(target=voice_worker, daemon=True).start()
 
 # --- API ---
 
-@app.route("/speak", methods=["POST"])
+@app.route("/speak", methods=["POST", "OPTIONS"])
 def speak():
+    global audio_error
     data = request.json or {}
 
     text = data.get("text", "").strip()
     if not text:
         return jsonify({"status": "ignored", "reason": "empty text"})
+    if not audio_ready:
+        return jsonify({"status": "error", "reason": audio_error or "audio unavailable"}), 503
+    if len(text) > 500:
+        return jsonify({"status": "error", "reason": "text too long"}), 413
+
+    try:
+        voice_index = int(data.get("voice_index", 0))
+    except (TypeError, ValueError):
+        voice_index = 0
+    if voice_index not in VOICES:
+        voice_index = 0
+
+    if voice_queue.qsize() >= 50:
+        return jsonify({"status": "error", "reason": "queue full"}), 429
 
     alert_id = data.get("id")
     now = time.time()
@@ -130,10 +175,11 @@ def speak():
             })
         last_spoken[alert_id] = now
 
+    audio_error = None
     voice_queue.put({
         "id": alert_id,
         "text": text,
-        "voice_index": int(data.get("voice_index", 0)),
+        "voice_index": voice_index,
         "time": now
     })
 
@@ -142,23 +188,19 @@ def speak():
 
 @app.route("/status", methods=["GET"])
 def get_status():
-    try:
-        return jsonify({
-            "playing": pygame.mixer.Channel(0).get_busy()
-        })
-    except:
-        return jsonify({"playing": False})
-
-
-@app.route("/")
-def index():
-    return send_from_directory(BASE_DIR, "beta_vocale.html")
+    playing = False
+    if audio_ready:
+        try:
+            playing = pygame.mixer.Channel(0).get_busy()
+        except Exception as e:
+            return jsonify({"ready": False, "playing": False, "error": f"{type(e).__name__}: {e}"})
+    return jsonify({"ready": audio_ready, "playing": playing, "error": audio_error})
 
 
 if __name__ == "__main__":
     app.run(
         host="127.0.0.1",
-        port=5000,
+        port=int(os.environ.get("SIMRACINGONE_VOICE_PORT", "5000")),
         debug=False,
         use_reloader=False
     )

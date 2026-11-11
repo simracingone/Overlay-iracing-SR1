@@ -1,6 +1,6 @@
 // ============================================================================
 // iRacing Overlay
-// Version : 4.1.2 (Optimisée & Stabilisée)
+// Version : 6.0.1 (HUD sans Radio Team)
 // Date    : 2026-08-17
 //
 // OBJECTIF DE CETTE VERSION
@@ -16,7 +16,6 @@
 // ============================================================================
 
 const API_URL = "http://127.0.0.1:8000";
-const VOICE_URL = "http://127.0.0.1:5000";
 
 async function fetchData() {
     try {
@@ -38,21 +37,6 @@ async function fetchData() {
 /* ==========================================================================
    1. CONFIGURATION & ÉTAT GLOBAL
    ========================================================================== */
-
-const CONFIG_TEAM = {
-    "0": { "departement": "Piste", "nom": "Denise Martin", "role": "Directeur de course", "image": "Denise.png" },
-    "1": { "departement": "Météo", "nom": "Henri Dubois", "role": "Ingénieur météo", "image": "Henri.png" },
-    "2": { "departement": "Voiture", "nom": "Antoine Roux", "role": "Chef mécanicien", "image": "Antoine.png" },
-    "3": { "departement": "Drapeaux", "nom": "Vivienne Martin", "role": "Officiel signaux", "image": "Vivienne.png" },
-    "4": { "departement": "Performance", "nom": "Gerard Petit", "role": "Analyste télémétrie", "image": "Gerard.png" },
-    "5": { "departement": "Classement", "nom": "Ariane Lambert", "role": "Stratège timing", "image": "Ariane.png" },
-    "6": { "departement": "Relatifs", "nom": "Remy Fontaine", "role": "Gestion trafic", "image": "Remy.png" },
-    "7": { "departement": "Physio", "nom": "Eloise Morel", "role": "Coach santé", "image": "Eloise.png" },
-    "8": { "departement": "Stratégie", "nom": "Charline Durand", "role": "Planification arrêts", "image": "Charline.png" },
-    "9": { "departement": "Mental", "nom": "Sylvie Vasseur", "role": "Préparateur mental", "image": "Sylvie.png" },
-    "10": { "departement": "Spotter", "nom": "Thierry Lefebvre", "role": "Observateur piste", "image": "Thierry.png" },
-    "11": { "departement": "Carburant", "nom": "Fabrice Dubois", "role": "Ingénieur consommation", "image": "Fabrice.png" }
-};
 
 let socket = null;
 let lastDataReceived = null;
@@ -77,61 +61,9 @@ let timers = {
 
 let lastTresLent = 0;
 
-let radioQueue = [];
-let isRadioTalking = false;
-
-let dernierFlagVocal = null;
-let derniereSessionAnnoncee = "";
-let alertePrioritaire = null;
-let usureMini = 100;
-
-/* Variable météo */
-let info_meteo_annonce = null;
-
 let Tactique = {
     sessionNum: 0,
     sessionType: "Practice"
-};
-
-let MemoireMeteo = {
-    briefingOk: false,
-    pisteTemp: null,
-    pluie: 0,
-    vent: 0,
-    mouille: 0,
-    derniereSession: null
-};
-
-let MemoireRelatif = {
-    lastTimeAnalyse: 0,
-    lastTimeConseille: 0
-};
-
-// Utilisation d'une structure globale unifiée
-window.MemoireClassement = window.MemoireClassement || {
-    posPrecedente: null,
-    meilleurTourClasse: {}
-};
-
-window.MemoireTactique = window.MemoireTactique || {
-    tourMessage: 0,
-    etatDelta: 0,
-    dernierVocalPodium: 0,
-    dernierGérard: 0,
-    tourDuDernierMessage: 0,
-    etatDeltaAnnonce: 0,
-    positionClassePrecedente: null,
-    meilleurTourClasse: 9999,
-    dernierCheckRelatif: 0,
-    lastFlag: null,
-    lastLap: 0,
-    lastIncCount: 0
-};
-
-let MemoireVocale = {
-    derniereAlerte: "",
-    dernierTemps: 0,
-    delaiMin: 2000
 };
 
 /* 60 FPS Limit */
@@ -310,16 +242,6 @@ function executerResetGlobal() {
         resetCompletHUD();
     }
 
-    if (window.MemoireMeteo) {
-        MemoireMeteo.briefingOk = false;
-        MemoireMeteo.derniereSession = null;
-    }
-
-    if (window.MemoireTactique) {
-        window.MemoireTactique.tourMessage = 0;
-        window.MemoireTactique.etatDelta = 0;
-        window.MemoireTactique.lastLeaderboard = [];
-    }
 }
 
 
@@ -519,21 +441,8 @@ function updateBar(id, pourcent, type) {
 
 
 /* ==========================================================================
-   4. SYSTÈME AUDIO & RESET
+   4. RESET
    ========================================================================== */
-
-function parler(id_alerte, texte, indexVoix = 1) {
-    if (id_alerte === MemoireVocale.derniereAlerte) {
-        return;
-    }
-
-    MemoireVocale.derniereAlerte = id_alerte;
-    radioQueue.push({ texte, indexVoix });
-
-    if (!isRadioTalking) {
-        processNextMessage();
-    }
-}
 
 function resetCompletHUD() {
     console.log("🔄 Reset HUD : Nettoyage complet pour nouvelle session");
@@ -547,10 +456,6 @@ function resetCompletHUD() {
         const el = document.getElementById(id);
         if (el) el.innerHTML = "";
     });
-
-    MemoireVocale.derniereAlerte = "";
-    derniereSessionAnnoncee = "";
-    dernierFlagVocal = null;
 
     const roues = ["fl", "fr", "rl", "rr"];
     roues.forEach(prefix => {
@@ -576,44 +481,10 @@ function resetCompletHUD() {
     if (document.getElementById("perf-vitesse")) document.getElementById("perf-vitesse").textContent = "0";
     if (document.getElementById("perf-gear")) document.getElementById("perf-gear").textContent = "N";
 
-    window.MemoireClassement = {
-        posPrecedente: null,
-        meilleurTourClasse: {}
-    };
-
-    MemoireRelatif = {
-        lastTimeAnalyse: 0,
-        lastTimeConseille: 0
-    };
-
-    window.MemoireTactique = {
-        tourMessage: 0,
-        etatDelta: 0,
-        dernierVocalPodium: 0,
-        dernierGérard: 0,
-        tourDuDernierMessage: 0,
-        etatDeltaAnnonce: 0,
-        positionClassePrecedente: null,
-        meilleurTourClasse: 9999,
-        dernierCheckRelatif: 0,
-        lastFlag: null,
-        lastLap: 0,
-        lastIncCount: 0
-    };
-
     const containerLeaderboard = document.getElementById("leaderboard-dynamic-container");
     const containerRelative = document.getElementById("relative-drivers-list");
     if (containerLeaderboard) containerLeaderboard.innerHTML = "";
     if (containerRelative) containerRelative.innerHTML = "";
-
-    MemoireMeteo = {
-        briefingOk: false,
-        pisteTemp: null,
-        pluie: 0,
-        vent: 0,
-        mouille: 0,
-        derniereSession: null
-    };
 
     console.log("✅ HUD Nettoyé");
 }
@@ -640,76 +511,6 @@ function applyVisibility() {
         }
     });
 }
-
-async function processNextMessage() {
-    if (radioQueue.length === 0) {
-        isRadioTalking = false;
-        setTimeout(() => {
-            const moduleRadio = document.getElementById("module-radio-team");
-            if (moduleRadio) moduleRadio.classList.remove("active");
-        }, 2000);
-        return;
-    }
-
-    isRadioTalking = true;
-    const msg = radioQueue.shift();
-    const expert = CONFIG_TEAM[msg.indexVoix.toString()] || CONFIG_TEAM["1"];
-    const moduleRadio = document.getElementById("module-radio-team");
-
-    if (moduleRadio) {
-        document.getElementById("radio-img").src = `assets/team/${expert.image}`;
-        document.getElementById("radio-name").textContent = expert.nom.toUpperCase();
-        document.getElementById("radio-dept").textContent = expert.departement;
-        document.getElementById("radio-role").textContent = expert.role;
-        document.getElementById("radio-message").textContent = msg.texte;
-
-        moduleRadio.style.display = "block";
-        moduleRadio.classList.add("active");
-
-        try {
-            await fetch(`${VOICE_URL}/speak`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    text: msg.texte,
-                    voice_index: msg.indexVoix
-                })
-            });
-
-            await attendreFinDeParole();
-            await new Promise(r => setTimeout(r, 800));
-
-        } catch (e) {
-            console.error("Erreur TTS:", e);
-        }
-    }
-
-    processNextMessage();
-}
-
-function attendreFinDeParole() {
-    return new Promise(resolve => {
-        let aCommenceA_Parler = false;
-
-        const verifInterval = setInterval(async () => {
-            try {
-                const res = await fetch(`${VOICE_URL}/status`);
-                const data = await res.json();
-
-                if (data.playing) {
-                    aCommenceA_Parler = true;
-                } else if (aCommenceA_Parler && !data.playing) {
-                    clearInterval(verifInterval);
-                    resolve();
-                }
-            } catch (e) {
-                clearInterval(verifInterval);
-                resolve();
-            }
-        }, 200);
-    });
-}
-
 
 /* ==========================================================================
    6. DRAPEAUX
@@ -753,103 +554,6 @@ function hudDrapeaux(donnees) {
             }
         });
 
-        const flagsNormalises = liste.map(f => f.toUpperCase().trim());
-        const alerteID = flagsNormalises[flagsNormalises.length - 1];
-
-        if (alerteID === dernierFlagVocal) {
-            return;
-        }
-
-        dernierFlagVocal = alerteID;
-
-        let sessionActive = Tactique.sessionType || "Practice";
-        if (Tactique.sessionNum === 0) sessionActive = "Practice";
-        if (Tactique.sessionNum === 1) sessionActive = "Qualify";
-        if (Tactique.sessionNum === 2) sessionActive = "Race";
-
-        const cleVert = Tactique.sessionNum + "-VERT";
-
-        console.log("[VOCAL]", "Session:", sessionActive, "| Flag:", alerteID);
-
-        switch (sessionActive) {
-            case "Practice":
-                switch (alerteID) {
-                    case "VERT":
-                        if (derniereSessionAnnoncee !== cleVert) {
-                            parler("VOX_VERT_PRAC", "Drapeau vert. Ariane à la radio, on valide les réglages.", 5);
-                            derniereSessionAnnoncee = cleVert;
-                        }
-                        break;
-                    case "JAUNE":
-                        parler("VOX_JAUNE", "Attention, danger ! Drapeau jaune !", 3);
-                        break;
-                    case "NOIRCUT":
-                        parler("VOX_JAUNE", "Petite Pénalité . attention !", 0);
-                        break;
-                    case "NOIRCUTPIT":
-                        parler("NOIRCUTPIT", "Attention, les commissaires t'ont à l'oeil ! Pénalité pour franchissement de la ligne continue en sortie de pit. Reste concentré, on va perdre du temps sur ce coup-là.", 10);
-                        break;
-                    case "MEATBALL":
-                        parler("MEATBALL", "Drapeau noir et orange ! Rentre au stand immédiatement !", 2);
-                        break;
-                }
-                break;
-
-            case "Qualify":
-                switch (alerteID) {
-                    case "VERT":
-                        if (derniereSessionAnnoncee !== cleVert) {
-                            parler("VOX_VERT_QUALY", "La piste est libre. Sylvie au rapport : c'est ton tour.", 9);
-                            derniereSessionAnnoncee = cleVert;
-                        }
-                        break;
-                    case "JAUNE":
-                        parler("VOX_JAUNE", "Attention, danger ! Drapeau jaune !", 3);
-                        break;
-                    case "DAMIER":
-                        parler("VOX_DAMIER_QUALY", "Drapeau à damier. Fin de la séance.", 9);
-                        break;
-                    case "QUALIFCASSE":
-                        parler("VOX_QUALIFCASSE", "C'est vraiment navrant pour les qualifications. Philippe, il faut la ramener", 2);
-                        break;
-                    case "NOIRCUT":
-                        parler("VOX_CUT", "Faut te concentrer, attention aux pénalités", 10);
-                        break;
-                    case "DERNIERTOUR":
-                        parler("VOX_DERNIERTOUR", "Allez, dernière chance. On est tous derrière toi, donne tout", 5);
-                        break;
-                    case "MEATBALL":
-                        parler("VOX_MEATBALL", "Drapeau noir et orange ! Rentre au stand immédiatement !", 2);
-                        break;
-                }
-                break;
-
-            case "Race":
-                switch (alerteID) {
-                    case "VERT":
-                        if (derniereSessionAnnoncee !== cleVert) {
-                            parler("VOX_VERT", "Drapeau vert, en piste !", 3);
-                            derniereSessionAnnoncee = cleVert;
-                        }
-                        break;
-                    case "JAUNE":
-                        parler("VOX_JAUNE", "Attention, danger ! Drapeau jaune !", 3);
-                        break;
-                    case "BLEU":
-                        parler("VOX_BLEU", "Drapeau bleu, laisse passer.", 6);
-                        break;
-                    case "DAMIER":
-                        parler("VOX_WIN", "Drapeau à damier ! C'est terminé .", 5);
-                        break;
-                    case "NOIRCUT":
-                        parler("VOX_WIN", "Pénalité pour avoir coupé un virage", 0);
-                        break;
-                    case "MEATBALL":
-                        parler("VOX_MEATBALL", "Drapeau noir et orange ! Rentre au stand immédiatement !", 2);
-                        break;
-                }
-                break;
-        }
     }
 }
 
@@ -1021,61 +725,6 @@ function hudClassement(donnees) {
 
     container.innerHTML = html;
 
-    /* LOGIQUE VOCALE INTÉGRÉE */
-    const now = Date.now();
-    const joueur = donnees.Leaderboard.find(p => p.IsPlayer);
-
-    if (!joueur || donnees.sessionType !== "Race") {
-        return;
-    }
-
-    const maPos = parseInt(joueur.Position);
-
-    if (window.MemoireClassement.posPrecedente !== null && maPos !== window.MemoireClassement.posPrecedente) {
-        const diff = window.MemoireClassement.posPrecedente - maPos;
-
-        if (diff >= 3) {
-            parler("RACE_HUGE_GAIN", `Ariane : Énorme ! On vient de gagner ${diff} places. On est P${maPos} !`, 5);
-        } else if (diff > 0) {
-            parler("RACE_GAIN", `Ariane : Belle manœuvre, on prend la P${maPos}.`, 5);
-        } else if (diff <= -3) {
-            parler("RACE_HUGE_LOSS", `Denise : On a perdu ${Math.abs(diff)} positions. Garde ton calme, rien n'est fini.`, 0);
-        } else if (diff < 0) {
-            parler("RACE_LOSS", `Denise : Une place de perdue. On redescend P${maPos}.`, 0);
-        }
-
-        window.MemoireClassement.posPrecedente = maPos;
-    }
-
-    /* DUELS */
-    const devant = donnees.Leaderboard.find(p => p.Position === maPos - 1);
-    const derriere = donnees.Leaderboard.find(p => p.Position === maPos + 1);
-
-    if (now - (window.MemoireTactique.dernierDuel || 0) > 120000) {
-        if (devant && devant.GapInt_raw < 0.7) {
-            parler("RACE_HUNT", `Remy : On est sur ses talons. Écart ${devant.GapInt_raw.toFixed(1)}s. Attaque !`, 6);
-            window.MemoireTactique.dernierDuel = now;
-        } else if (derriere && derriere.GapInt_raw < 0.6) {
-            parler("RACE_DEFEND", `Remy : Danger derrière. Il est à ${derriere.GapInt_raw.toFixed(1)}s. Protège ta ligne.`, 6);
-            window.MemoireTactique.dernierDuel = now;
-        }
-    }
-
-    /* FIN DE COURSE */
-    const flag = donnees.flags || "";
-    if (flag.includes("Checkered") && !window.MemoireTactique.vocalFinCourse) {
-        if (maPos === 1) {
-            parler("RACE_WIN", "Ariane : P 1 ! Victoire ! Quelle performance magistrale aujourd'hui !", 5);
-        } else if (maPos <= 3) {
-            parler("RACE_PODIUM", `Ariane : Podium ! On termine P${maPos}. C'est un superbe résultat pour l'équipe.`, 5);
-        } else if (maPos <= 10) {
-            parler("RACE_TOP10", `Remy : On finit P${maPos}. C'est dans le Top 10, l'objectif est rempli.`, 6);
-        } else {
-            parler("RACE_FINISH", `Denise : Drapeau à damier. On termine P${maPos}. On range la voiture.`, 0);
-        }
-
-        window.MemoireTactique.vocalFinCourse = true;
-    }
 }
 
 
@@ -1255,343 +904,6 @@ function hudRelatif(donnees) {
         html + "</div>";
 
 
-    /* ======================================================================
-       LOGIQUE VOCALE
-       ====================================================================== */
-
-    if (!donnees.speed || donnees.speed < 40) {
-        return;
-    }
-
-    const now = Date.now();
-
-    const sessionActive =
-        donnees.sessionType || "Practice";
-
-    const myIndex =
-        donnees.Relative.findIndex(
-            p => p.IsPlayer
-        );
-
-    if (myIndex === -1) {
-        return;
-    }
-
-    const moi =
-        donnees.Relative[myIndex];
-
-    const devant =
-        donnees.Relative[myIndex - 1];
-
-    const delta =
-        parseFloat(
-            donnees.delta_raw || 0
-        );
-
-    const currentLap =
-        donnees.lap || 0;
-
-
-    /* ======================================================================
-       MEMOIRE DU TOUR
-       ====================================================================== */
-
-    if (
-        currentLap >
-        window.MemoireTactique.tourMessage
-    ) {
-        window.MemoireTactique.tourMessage =
-            currentLap;
-
-        window.MemoireTactique.etatDelta =
-            0;
-    }
-
-
-    /* ======================================================================
-       CHRONO VALIDE
-       ====================================================================== */
-
-    const aUnChronoValide =
-        (
-            moi.LastLapTime_raw &&
-            moi.LastLapTime_raw > 0
-        );
-
-
-    /* ======================================================================
-       DELTA > 1 SECONDE
-       ====================================================================== */
-
-    if (
-        sessionActive === "Practice" &&
-        aUnChronoValide &&
-        window.MemoireTactique.etatDelta === 0
-    ) {
-
-        if (delta <= -1.0) {
-
-            const msgsAriane = [
-                "Focus ! On a plus d'une seconde d'avance. Reste sur les rails, ce tour est historique !",
-                "Le delta est magnifique, plus d'une seconde d'avance. Ne change rien, trajectoires tendues !",
-                "C'est le tour de la semaine ! On survole la piste là, reste fluide !",
-                "Regarde-moi ce chrono ! Plus d'une seconde d'avance. Respire, c'est ton tour !"
-            ];
-
-            parler(
-                "DELTA_GOD",
-                msgsAriane[
-                    Math.floor(
-                        Math.random() *
-                        msgsAriane.length
-                    )
-                ],
-                5
-            );
-
-            window.MemoireTactique.etatDelta =
-                1;
-        }
-    }
-
-
-    /* ======================================================================
-       DELTA TECHNIQUE
-       ====================================================================== */
-
-    if (
-        sessionActive === "Practice" &&
-        delta < -0.3 &&
-        delta > -0.6 &&
-        aUnChronoValide
-    ) {
-
-        if (
-            now -
-            window.MemoireTactique.dernierGerard
-            > 240000
-        ) {
-
-            const msgsGerard = [
-                "On gagne du temps de manière constante dans ce secteur. Continue sur cette ligne.",
-                "Les relevés sont bons. Tu améliores tes sorties de virage, le delta est au vert."
-            ];
-
-            parler(
-                "DELTA_TECH",
-                msgsGerard[
-                    Math.floor(
-                        Math.random() *
-                        msgsGerard.length
-                    )
-                ],
-                4
-            );
-
-            window.MemoireTactique.dernierGerard =
-                now;
-        }
-    }
-
-
-    /* ======================================================================
-       PILOTE DEVANT
-       ====================================================================== */
-
-    if (
-        devant &&
-        devant.UserName !== "OFF TRACK"
-    ) {
-
-        const gap =
-            parseFloat(
-                devant.GapRelat
-            );
-
-        const memeCategorie =
-            devant.CarClassID ===
-            moi.CarClassID;
-
-
-        /* ------------------------------------------------------------------
-           CIBLE PRACTICE
-           ------------------------------------------------------------------ */
-
-        if (
-            sessionActive === "Practice" &&
-            memeCategorie &&
-            gap < 3.0 &&
-            gap > 0.8
-        ) {
-
-            if (
-                now -
-                MemoireRelatif.lastTimeAnalyse
-                > 120000
-            ) {
-
-                parler(
-                    "PRAC_TARGET",
-                    `Cible en vue : ${devant.UserName} est ton lièvre. Accroche-toi !`,
-                    6
-                );
-
-                MemoireRelatif.lastTimeAnalyse =
-                    now;
-            }
-        }
-
-
-        /* ------------------------------------------------------------------
-           PILOTE TRES PROCHE
-           ------------------------------------------------------------------ */
-
-        if (
-            gap < 0.3 &&
-            now -
-            MemoireRelatif.lastTimeConseille
-            > 180000
-        ) {
-
-            parler(
-                "PRAC_COOL",
-                "Tu es dans ses échappements. Garde de l'espace.",
-                5
-            );
-
-            MemoireRelatif.lastTimeConseille =
-                now;
-        }
-    }
-
-
-    /* ======================================================================
-       POSITION
-       ====================================================================== */
-
-    const maPosition =
-        donnees.Position || 0;
-
-
-    /* ======================================================================
-       PODIUM
-       ====================================================================== */
-
-    if (
-        now -
-        window.MemoireTactique.dernierVocalPodium
-        > 300000
-    ) {
-
-        if (maPosition === 1) {
-
-            parler(
-                "POLE",
-                "Incroyable ! On vient de prendre la pole position ! T'es le patron.",
-                5
-            );
-
-            window.MemoireTactique.dernierVocalPodium =
-                now;
-
-        } else if (
-            maPosition > 1 &&
-            maPosition <= 3
-        ) {
-
-            parler(
-                "PODIUM",
-                `On tient le podium ! P${maPosition} au classement. Reste concentré.`,
-                6
-            );
-
-            window.MemoireTactique.dernierVocalPodium =
-                now;
-        }
-    }
-
-
-    /* ======================================================================
-       MEILLEUR CHRONO
-       ====================================================================== */
-
-    const monBestLap =
-        moi.BestLapTime_raw || 0;
-
-
-    /* ======================================================================
-       PREMIER CHRONO
-       ====================================================================== */
-
-    if (
-        sessionActive === "Practice" &&
-        aUnChronoValide &&
-        !window.MemoireTactique.premierChronoFait
-    ) {
-
-        const msgsEloiseFirst = [
-            "Premier chrono enregistré. C'est une bonne base de travail, on va pouvoir affiner maintenant.",
-            "Le premier temps de référence est tombé. On a une base, voyons où on peut gratter des dixièmes.",
-            "C'est validé. Premier tour propre, le chrono est dans la boîte."
-        ];
-
-        parler(
-            "FIRST_LAP",
-            msgsEloiseFirst[
-                Math.floor(
-                    Math.random() *
-                    msgsEloiseFirst.length
-                )
-            ],
-            7
-        );
-
-        window.MemoireTactique.premierChronoFait =
-            true;
-    }
-
-
-    /* ======================================================================
-       NOUVEAU BEST LAP
-       ====================================================================== */
-
-    if (
-        aUnChronoValide &&
-        (
-            sessionActive === "Practice" ||
-            sessionActive === "Race"
-        )
-    ) {
-
-        if (
-            moi.LastLapTime_raw ===
-            monBestLap &&
-            monBestLap > 0 &&
-            window.MemoireTactique.tourBestAnnonce !==
-            currentLap
-        ) {
-
-            const msgsEloiseBest = [
-                "Nouveau record personnel ! On améliore encore, la voiture est parfaitement exploitée.",
-                "C'est ton meilleur tour en piste ! Ton rythme est excellent, continue sur cette lancée.",
-                "Record battu ! Les data sont formelles : tu es plus rapide que jamais aujourd'hui."
-            ];
-
-            parler(
-                "BEST_LAP",
-                msgsEloiseBest[
-                    Math.floor(
-                        Math.random() *
-                        msgsEloiseBest.length
-                    )
-                ],
-                9
-            );
-
-            window.MemoireTactique.tourBestAnnonce =
-                currentLap;
-        }
-    }
 }
 
 /* ==========================================================================
@@ -1643,37 +955,6 @@ function hudMeteo(data) {
         }
     }
 
-    const session = Tactique.sessionType || "Practice";
-    const pluie = data.rain_intensity_pct || 0;
-    const vent = data.wind_vel * 3.6;
-
-    if ((session === "Practice" || session === "Race") && MemoireMeteo.pisteTemp !== null) {
-        const delta = data.track_temp - MemoireMeteo.pisteTemp;
-
-        if (delta >= 2) {
-            parler("METEO_CHAUD", "La piste chauffe rapidement.", 1);
-            MemoireMeteo.pisteTemp = data.track_temp;
-        } else if (delta <= -2) {
-            parler("METEO_FROID", "La piste refroidit rapidement.", 1);
-            MemoireMeteo.pisteTemp = data.track_temp;
-        }
-    }
-
-    if (pluie > 0 && MemoireMeteo.pluie === 0) {
-        parler("PLUIE_DEBUT", "La pluie arrive sur le circuit.", 1);
-    }
-
-    if (pluie === 0 && MemoireMeteo.pluie > 0) {
-        parler("PLUIE_FIN", "La pluie s'arrête, la piste va sécher.", 1);
-    }
-
-    MemoireMeteo.pluie = pluie;
-
-    if (session === "Race" && vent > 35 && MemoireMeteo.vent <= 35) {
-        parler("VENT_FORT", "Vent fort sur le circuit, attention.", 1);
-    }
-
-    MemoireMeteo.vent = vent;
 }
 
 
@@ -1683,13 +964,6 @@ function hudMeteo(data) {
 
 function hudPiste(data) {
     if (!data) return;
-
-    const now = Date.now();
-
-    if (window.MemoireTactique.dernierFuelVocal === undefined) window.MemoireTactique.dernierFuelVocal = 0;
-    if (window.MemoireTactique.dernierGerardPiste === undefined) window.MemoireTactique.dernierGerardPiste = 0;
-    if (window.MemoireTactique.lastIncCount === undefined) window.MemoireTactique.lastIncCount = 0;
-    if (window.MemoireTactique.dernierVocalPhysio === undefined) window.MemoireTactique.dernierVocalPhysio = 0;
 
     /* CARBURANT */
     const elCons = document.getElementById("strat-fuel-last");
@@ -1714,15 +988,6 @@ function hudPiste(data) {
                     elLapsEst.classList.remove("blink-fast");
                 }
 
-                if (now - window.MemoireTactique.dernierFuelVocal > 300000) {
-                    if (toursRestants < 1.2) {
-                        parler("FUEL_EMERGENCY", "C'est le dernier tour ! Rentre maintenant ou on finit à pied !", 2);
-                        window.MemoireTactique.dernierFuelVocal = now;
-                    } else if (data.fuel_avg > 0 && data.fuel_last_lap > (data.fuel_avg * 1.08)) {
-                        parler("FUEL_BURN", "ici Antoine. On consomme trop sur ce run. Lève un peu le pied.", 2);
-                        window.MemoireTactique.dernierFuelVocal = now;
-                    }
-                }
             } else {
                 elLapsEst.textContent = "--";
             }
@@ -1749,13 +1014,6 @@ function hudPiste(data) {
         if (elLast) elLast.textContent = monInfo.LastLapTime || "--:--.---";
         if (elBest) elBest.textContent = monInfo.BestLapTime || "--:--.---";
 
-        if (data.leader_best_lap > 0 && monInfo.BestLapTime_raw > 0 && now - window.MemoireTactique.dernierGerardPiste > 600000) {
-            const diff = (monInfo.BestLapTime_raw - data.leader_best_lap).toFixed(3);
-            if (diff > 0.6) {
-                parler("PERF_GAP", `ici Gérard. On rend ${diff} au leader sur le meilleur tour. Travaille tes entrées de virage.`, 4);
-                window.MemoireTactique.dernierGerardPiste = now;
-            }
-        }
     }
 
     /* INCIDENTS */
@@ -1764,12 +1022,6 @@ function hudPiste(data) {
 
     if (elInc) {
         elInc.textContent = inc;
-        if (inc > window.MemoireTactique.lastIncCount) {
-            if ((inc - window.MemoireTactique.lastIncCount) >= 2) {
-                parler("INC_DANGER", "ici Denise. On accumule trop d'incidents. Reste entre les lignes blanches.", 0);
-            }
-            window.MemoireTactique.lastIncCount = inc;
-        }
     }
 
     /* JOKER */
@@ -1799,11 +1051,6 @@ function hudPiste(data) {
         document.getElementById("strat-session-time").textContent = data.session_time_str || "--:--:--";
     }
 
-    /* FATIGUE */
-    if (data.avg_lap_raw > 0 && data.last_lap_raw > (data.avg_lap_raw + 2.0) && now - window.MemoireTactique.dernierVocalPhysio > 900000) {
-        parler("PHYSIO_ALERT", "Eloïse ici. Ton rythme chute, bois un peu et relaxe tes mains sur le volant.", 7);
-        window.MemoireTactique.dernierVocalPhysio = now;
-    }
 }
 
 

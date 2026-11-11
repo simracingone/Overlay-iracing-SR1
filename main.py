@@ -11,27 +11,22 @@ from starlette.websockets import WebSocketState
 
 
 
+# Les fenêtres Electron en file:// utilisent l'origine "null". Seule cette
+# origine peut lire l'API depuis le navigateur intégré.
+
 # FORCE LE NAVIGATEUR A RECONNAITRE LE CSS ET LE JS SOUS WINDOWS
 mimetypes.add_type('text/css', '.css')
 mimetypes.add_type('application/javascript', '.js')
 
 # 1. CRÉATION DE L'APPLICATION (À METTRE OBLIGATOIREMENT ICI)
 app = FastAPI()
-
-# 2. CONFIGURATION DES PERMISSIONS (CORS)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["null"],
+    allow_methods=["GET"],
+    allow_headers=[],
 )
 
-@app.post("/restart")
-async def restart_server():
-    """Force l'arrêt de FastAPI. Le script batch ou un watcher le relancera."""
-    print("⚠️ Demande de redémarrage du serveur reçue !")
-    os._exit(0)  # Tue le processus Python instantanément
-    
 # GESTION DU FLUX DE DONNEES (WEBSOCKET)
 @app.websocket("/ws")
 async def websocket_endpoint(ws: WebSocket):

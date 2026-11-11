@@ -2,7 +2,7 @@
     const modules = [
         'module-leaderboard', 'module-relative', 'module-strategie-course',  
         'module-meteo', 'module-pneus-detail', 'module-performance',  
-        'module-systeme', 'module-etat-vehicule', 'module-flags', 'module-radio-team'
+        'module-systeme', 'module-etat-vehicule', 'module-flags'
     ];
 
     const toggleDisplay = (id, show) => {

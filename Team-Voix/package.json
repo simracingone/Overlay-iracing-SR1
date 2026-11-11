@@ -1,0 +1,16 @@
+{
+  "name": "simracingone-team-voice",
+  "version": "1.0.3",
+  "description": "Fenêtre Team et annonces vocales pour l'overlay iRacing SimracingOne",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "axios": "^1.13.2"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0"
+  }
+}

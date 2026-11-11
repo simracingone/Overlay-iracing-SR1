@@ -1,0 +1,12 @@
+NOTICE DE CONFIDENTIALITÉ — SIMRACINGONE TEAM VOICE
+Version : 1.0.3
+
+Ce projet compagnon lit les données de course depuis le serveur local du
+projet principal, sur 127.0.0.1:8000. Son service vocal écoute sur
+127.0.0.1:5000 ou choisit un autre port local libre si nécessaire. Il
+n'ajoute aucune règle au pare-feu.
+
+La génération des annonces envoie leur texte au service en ligne Edge TTS
+de Microsoft via le paquet edge-tts. Une connexion Internet est nécessaire.
+Ne faites pas lire de texte que vous ne souhaitez pas transmettre à ce
+service.

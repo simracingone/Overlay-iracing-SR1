@@ -21,6 +21,8 @@ Overlays-SimracingOne/
 ##################################
 *.log
 *.tmp
+runtime-*.pid
+voice_temp.mp3
 
 ##################################
 # OS / IDE
