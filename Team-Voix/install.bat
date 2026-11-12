@@ -41,18 +41,18 @@ echo [+] Detection de Python...
 set "SYS_PYTHON="
 if not "%~2"=="" if exist "%~2" set "SYS_PYTHON="%~2""
 if not defined SYS_PYTHON (
-where py.exe >nul 2>&1
-if !errorlevel! equ 0 (
-    py -3 -c "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)" >nul 2>&1
-    if !errorlevel! equ 0 set "SYS_PYTHON=py -3"
-)
-if not defined SYS_PYTHON (
-    where python.exe >nul 2>&1
+    where py.exe >nul 2>&1
     if !errorlevel! equ 0 (
-        python -c "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)" >nul 2>&1
-        if !errorlevel! equ 0 set "SYS_PYTHON=python"
+        py -3 -c "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)" >nul 2>&1
+        if !errorlevel! equ 0 set "SYS_PYTHON=py -3"
     )
-)
+    if not defined SYS_PYTHON (
+        where python.exe >nul 2>&1
+        if !errorlevel! equ 0 (
+            python -c "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)" >nul 2>&1
+            if !errorlevel! equ 0 set "SYS_PYTHON=python"
+        )
+    )
 )
 if not defined SYS_PYTHON (
     where winget.exe >nul 2>&1
@@ -94,13 +94,22 @@ if not exist "%PYTHON_EXE%" (
     exit /b 1
 )
 
+echo [+] Mise a jour des outils de base Python (pip, setuptools, wheel)...
+"%PYTHON_EXE%" -m pip install --upgrade pip setuptools wheel >nul 2>&1
+
 echo [+] Installation des dependances vocales...
-"%PYTHON_EXE%" -m pip install --prefer-binary -r requirements.txt
+:: On force l'utilisation des roues binaires pour eviter les erreurs de compilation C++ (comme pygame-ce)
+"%PYTHON_EXE%" -m pip install --only-binary=:all: -r requirements.txt
 if errorlevel 1 (
-    echo [ERREUR] Installation des dependances vocales echouee.
-    pause
-    exit /b 1
+    echo [AVERTISSEMENT] Installation stricte par binaire echouee, tentative standard avec prefer-binary...
+    "%PYTHON_EXE%" -m pip install --prefer-binary -r requirements.txt
+    if errorlevel 1 (
+        echo [ERREUR] Installation des dependances vocales echouee.
+        pause
+        exit /b 1
+    )
 )
+
 "%PYTHON_EXE%" -c "import edge_tts, pygame, flask"
 if errorlevel 1 (
     echo [ERREUR] Verification des modules vocaux echouee.
